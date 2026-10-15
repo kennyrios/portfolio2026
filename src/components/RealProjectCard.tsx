@@ -2,7 +2,6 @@ import React, { useState, useRef, MouseEvent } from 'react';
 import { RealProject } from '../types/portfolio';
 import { ArrowUpRight, ExternalLink, Globe, Sparkles, Layers, CheckCircle2 } from 'lucide-react';
 import { MagneticElement } from './MagneticElement';
-import { VelocitySkewContainer } from './VelocitySkewContainer';
 
 interface RealProjectCardProps {
   project: RealProject;
@@ -52,11 +51,7 @@ export const RealProjectCard: React.FC<RealProjectCardProps> = ({ project, onOpe
   const accentColor = project.accentColor || '#f59e0b';
 
   return (
-    <VelocitySkewContainer
-      maxSkew={2.5}
-      intensity={0.09}
-      className="h-full"
-    >
+    <div className="h-full">
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
@@ -277,6 +272,6 @@ export const RealProjectCard: React.FC<RealProjectCardProps> = ({ project, onOpe
           </div>
         </div>
       </div>
-    </VelocitySkewContainer>
+    </div>
   );
 };
