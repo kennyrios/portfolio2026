@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react';
 
 interface LayerConfig {
   ref: React.RefObject<HTMLDivElement | null>;
-  speedY: number; // Vertical scroll parallax multiplier (e.g., 0.12, 0.25, 0.4)
-  speedX?: number; // Subtle horizontal drift or mouse reaction
-  mouseStrength?: number; // Cursor micro-parallax factor (e.g. 15px)
+  speedY: number;
+  speedX?: number;
+  mouseStrength?: number;
 }
 
 export function useParallaxBackground(layers: LayerConfig[]) {
@@ -12,57 +12,78 @@ export function useParallaxBackground(layers: LayerConfig[]) {
   const scrollRef = useRef({ y: 0, targetY: 0 });
 
   useEffect(() => {
-    // Check if user prefers reduced motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
     let rafId: number;
+    let isRunning = false;
+
+    const startLoop = () => {
+      if (!isRunning) {
+        isRunning = true;
+        rafId = requestAnimationFrame(update);
+      }
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Normalize mouse to [-1, 1] relative to window center
       const nx = (e.clientX / window.innerWidth) * 2 - 1;
       const ny = (e.clientY / window.innerHeight) * 2 - 1;
       mouseRef.current.targetX = nx;
       mouseRef.current.targetY = ny;
+      startLoop();
     };
 
     const handleScroll = () => {
       scrollRef.current.targetY = window.scrollY || window.pageYOffset || 0;
+      startLoop();
     };
 
-    // Initialize with current scroll
     scrollRef.current.targetY = window.scrollY || window.pageYOffset || 0;
     scrollRef.current.y = scrollRef.current.targetY;
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Smooth render loop (LERP)
     const update = () => {
       // Lerp mouse
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.06;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.06;
+      const mouseDiffX = mouseRef.current.targetX - mouseRef.current.x;
+      const mouseDiffY = mouseRef.current.targetY - mouseRef.current.y;
+      mouseRef.current.x += mouseDiffX * 0.08;
+      mouseRef.current.y += mouseDiffY * 0.08;
 
-      // Lerp scroll for buttery smooth gliding
-      scrollRef.current.y += (scrollRef.current.targetY - scrollRef.current.y) * 0.1;
+      // Lerp scroll
+      const scrollDiff = scrollRef.current.targetY - scrollRef.current.y;
+      scrollRef.current.y += scrollDiff * 0.12;
 
       const currentScrollY = scrollRef.current.y;
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
 
-      layers.forEach(({ ref, speedY, speedX = 0, mouseStrength = 0 }) => {
-        if (!ref.current) return;
+      for (let i = 0; i < layers.length; i++) {
+        const { ref, speedY, speedX = 0, mouseStrength = 0 } = layers[i];
+        if (!ref.current) continue;
 
         const transY = currentScrollY * speedY + my * mouseStrength;
         const transX = speedX * (currentScrollY * 0.05) + mx * mouseStrength;
 
-        ref.current.style.transform = `translate3d(${transX.toFixed(2)}px, ${transY.toFixed(2)}px, 0)`;
-      });
+        ref.current.style.transform = `translate3d(${transX.toFixed(1)}px, ${transY.toFixed(1)}px, 0)`;
+      }
 
-      rafId = requestAnimationFrame(update);
+      // Check if settled to stop running RAF loop unnecessarily
+      const isSettled =
+        Math.abs(scrollDiff) < 0.2 &&
+        Math.abs(mouseDiffX) < 0.002 &&
+        Math.abs(mouseDiffY) < 0.002;
+
+      if (!isSettled) {
+        rafId = requestAnimationFrame(update);
+      } else {
+        isRunning = false;
+      }
     };
 
-    rafId = requestAnimationFrame(update);
+    // Initial render
+    startLoop();
 
     return () => {
       cancelAnimationFrame(rafId);

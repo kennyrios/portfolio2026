@@ -11,53 +11,63 @@ export function useCardParallax({ speed = 0.08, imageSpeed = 0.05 }: UseCardPara
 
   useEffect(() => {
     // Check reduced motion preference
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const container = containerRef.current;
+    if (!container) return;
 
     let rafId: number;
+    let isIntersecting = false;
 
     const updateParallax = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
+      if (!isIntersecting || !container) return;
+      const rect = container.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Only compute if card is within or near the viewport
-      if (rect.bottom >= -250 && rect.top <= windowHeight + 250) {
-        // Progress: 0 when top of card enters bottom of viewport, 1 when bottom of card leaves top
-        const totalTravel = windowHeight + rect.height;
-        const currentPosition = windowHeight - rect.top;
-        const progress = currentPosition / totalTravel;
-        const normalized = progress - 0.5; // ranges from -0.5 to +0.5
+      // Progress: 0 when top of card enters bottom of viewport, 1 when bottom leaves top
+      const totalTravel = windowHeight + rect.height;
+      const currentPosition = windowHeight - rect.top;
+      const progress = currentPosition / totalTravel;
+      const normalized = progress - 0.5; // ranges from -0.5 to +0.5
 
-        const isMobile = window.innerWidth < 768;
-        const effectiveSpeed = isMobile ? speed * 0.35 : speed;
-        const effectiveImageSpeed = isMobile ? imageSpeed * 0.4 : imageSpeed;
+      const isMobile = window.innerWidth < 768;
+      const effectiveSpeed = isMobile ? speed * 0.35 : speed;
+      const effectiveImageSpeed = isMobile ? imageSpeed * 0.4 : imageSpeed;
 
-        // Calculate card offset (up to ~60px translation)
-        const cardY = normalized * effectiveSpeed * 150;
-        
-        containerRef.current.style.transform = `translate3d(0, ${cardY.toFixed(2)}px, 0)`;
+      // Calculate card offset
+      const cardY = normalized * effectiveSpeed * 150;
+      container.style.transform = `translate3d(0, ${cardY.toFixed(1)}px, 0)`;
 
-        if (imageRef.current) {
-          // Inner image travels smoothly to create spatial window depth
-          const imgY = normalized * effectiveImageSpeed * 65;
-          imageRef.current.style.transform = `translate3d(0, ${imgY.toFixed(2)}px, 0) scale(1.08)`;
-        }
+      if (imageRef.current) {
+        const imgY = normalized * effectiveImageSpeed * 65;
+        imageRef.current.style.transform = `translate3d(0, ${imgY.toFixed(1)}px, 0) scale(1.06)`;
       }
     };
 
     const handleScroll = () => {
+      if (!isIntersecting) return;
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(updateParallax);
     };
 
+    // Use IntersectionObserver to disable scroll calculations when offscreen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isIntersecting = entry.isIntersecting;
+        if (isIntersecting) {
+          updateParallax();
+        }
+      },
+      { rootMargin: '100px 0px 100px 0px' }
+    );
+
+    observer.observe(container);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
-    
-    // Initial calculation
-    updateParallax();
 
     return () => {
+      observer.disconnect();
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
       cancelAnimationFrame(rafId);

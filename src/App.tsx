@@ -16,6 +16,7 @@ import { Footer } from './components/Footer';
 import { RealProjectModal } from './components/RealProjectModal';
 import { LenisProvider, useLenis } from './context/LenisContext';
 import { SectionParallaxBridge } from './components/SectionParallaxBridge';
+import { TornPaperHorizon } from './components/TornPaperHorizon';
 
 function PortfolioApp() {
   const [selectedProject, setSelectedProject] = useState<RealProject | null>(null);
@@ -30,7 +31,7 @@ function PortfolioApp() {
   };
 
   const handleScrollDownFromIntro = () => {
-    scrollTo('#hero-content', { offset: -30, duration: 1.2 });
+    scrollTo('#hero-content', { offset: 0, duration: 1.2 });
   };
 
   return (
@@ -43,89 +44,104 @@ function PortfolioApp() {
 
       {/* Main Content Sections */}
       <main className="relative z-10">
-        {/* Monogram Intro Animation */}
-        <IntroScrollHero onScrollDown={handleScrollDownFromIntro} />
+        {/* Section 1: Monogram Intro Section with Parallax Pinning */}
+        <div className="relative h-[200vh]">
+          <div className="sticky top-0 h-screen w-full overflow-hidden z-10">
+            <IntroScrollHero onScrollDown={handleScrollDownFromIntro} />
+          </div>
+        </div>
 
-        <div id="hero-content">
+        {/* Section 2: Hero Section overlapping Section 1 with Artisanal Torn Paper Edge (Straight edge-to-edge, zero rounded corners) */}
+        <div
+          id="hero-content"
+          className="relative z-20 shadow-[0_-30px_90px_rgba(0,0,0,0.95),0_-10px_30px_rgba(0,0,0,0.8)]"
+          style={{ marginTop: '-100vh' }}
+        >
+          {/* Animated Artisanal Deckled Torn Paper Horizon across full viewport width */}
+          <TornPaperHorizon />
+
           <Hero
             onExploreWorks={handleScrollToWorks}
             onContactClick={handleScrollToContact}
           />
         </div>
 
-        {/* Parallax Bridge: Hero → Works */}
-        <SectionParallaxBridge
-          sectionIndex="01 // 03"
-          fromLabel="OVERVIEW & IMPACT"
-          toLabel="SELECTED WORKS"
-          marqueePrimary={[
-            'SELECTED WORKS',
-            'AVENUE LIVING ASSET MANAGEMENT',
-            'MINI MALL STORAGE',
-            'DYNAMIC MAPPING',
-            'DESIGN SYSTEMS',
-          ]}
-          marqueeSecondary={[
-            'CALGARY, CANADA',
-            '60FPS COMPOSITING',
-            'ENTERPRISE ARCHITECTURE',
-            'TYPESCRIPT',
-            'REACT 19',
-          ]}
-          coordinates="51.0447° N · 114.0719° W"
-          accent="amber"
-        />
+        {/* Subsequent Portfolio Flow with Solid Dark Stacking */}
+        <div className="relative z-20 bg-[#09090b]">
+          {/* Parallax Bridge: Hero → Works */}
+          <SectionParallaxBridge
+            sectionIndex="01 // 03"
+            fromLabel="OVERVIEW & IMPACT"
+            toLabel="SELECTED WORKS"
+            marqueePrimary={[
+              'SELECTED WORKS',
+              'AVENUE LIVING ASSET MANAGEMENT',
+              'MINI MALL STORAGE',
+              'DYNAMIC MAPPING',
+              'DESIGN SYSTEMS',
+            ]}
+            marqueeSecondary={[
+              'CALGARY, CANADA',
+              '60FPS COMPOSITING',
+              'ENTERPRISE ARCHITECTURE',
+              'TYPESCRIPT',
+              'REACT 19',
+            ]}
+            coordinates="51.0447° N · 114.0719° W"
+            accent="amber"
+          />
 
-        {/* Mathis Biabiany Card Presentation & Projects Showcase */}
-        <ProjectsSection onSelectProject={setSelectedProject} />
+          {/* Mathis Biabiany Card Presentation & Projects Showcase */}
+          <ProjectsSection onSelectProject={setSelectedProject} />
 
-        {/* Parallax Bridge: Works → About */}
-        <SectionParallaxBridge
-          sectionIndex="02 // 03"
-          fromLabel="FEATURED PORTFOLIO"
-          toLabel="PHILOSOPHY & CAPABILITIES"
-          marqueePrimary={[
-            'ARCHITECTURAL PHILOSOPHY',
-            'SCALABLE ECOSYSTEMS',
-            'FULL-CYCLE UI/UX',
-            'MAPBOX GL INTERACTION',
-            'MODULAR CMS',
-          ]}
-          marqueeSecondary={[
-            'WCAG AA COMPLIANT',
-            'HEADLESS WORDPRESS',
-            'FIGMA TO PRODUCTION',
-            'CALGARY HEADQUARTERS',
-          ]}
-          coordinates="51.0447° N · 114.0719° W"
-          accent="cyan"
-        />
+          {/* Parallax Bridge: Works → About */}
+          <SectionParallaxBridge
+            sectionIndex="02 // 03"
+            fromLabel="FEATURED PORTFOLIO"
+            toLabel="PHILOSOPHY & CAPABILITIES"
+            marqueePrimary={[
+              'ARCHITECTURAL PHILOSOPHY',
+              'SCALABLE ECOSYSTEMS',
+              'FULL-CYCLE UI/UX',
+              'MAPBOX GL INTERACTION',
+              'MODULAR CMS',
+            ]}
+            marqueeSecondary={[
+              'WCAG AA COMPLIANT',
+              'HEADLESS WORDPRESS',
+              'FIGMA TO PRODUCTION',
+              'CALGARY HEADQUARTERS',
+            ]}
+            coordinates="51.0447° N · 114.0719° W"
+            accent="cyan"
+          />
 
-        {/* About, Core Philosophy & Technical Capabilities Matrix */}
-        <AboutSection />
+          {/* About, Core Philosophy & Technical Capabilities Matrix */}
+          <AboutSection />
 
-        {/* Parallax Bridge: About → Contact */}
-        <SectionParallaxBridge
-          sectionIndex="03 // 03"
-          fromLabel="TECHNICAL MATRIX"
-          toLabel="DIRECT INQUIRIES"
-          marqueePrimary={[
-            'LET’S BUILD SOMETHING EXCEPTIONAL',
-            'SENIOR ARCHITECTURE',
-            'CONTRACT ENGAGEMENTS',
-            'CALGARY & REMOTE',
-          ]}
-          marqueeSecondary={[
-            'KENNYRGRAFICO@GMAIL.COM',
-            'AVAILABLE FOR SELECTED CLIENTS',
-            'ESTABLISHED 2016',
-          ]}
-          coordinates="51.0447° N · 114.0719° W"
-          accent="emerald"
-        />
+          {/* Parallax Bridge: About → Contact */}
+          <SectionParallaxBridge
+            sectionIndex="03 // 03"
+            fromLabel="TECHNICAL MATRIX"
+            toLabel="DIRECT INQUIRIES"
+            marqueePrimary={[
+              'LET’S BUILD SOMETHING EXCEPTIONAL',
+              'SENIOR ARCHITECTURE',
+              'CONTRACT ENGAGEMENTS',
+              'CALGARY & REMOTE',
+            ]}
+            marqueeSecondary={[
+              'KENNYRGRAFICO@GMAIL.COM',
+              'AVAILABLE FOR SELECTED CLIENTS',
+              'ESTABLISHED 2016',
+            ]}
+            coordinates="51.0447° N · 114.0719° W"
+            accent="emerald"
+          />
 
-        {/* Contact & Inquiries */}
-        <ContactSection />
+          {/* Contact & Inquiries */}
+          <ContactSection />
+        </div>
       </main>
 
       {/* Dark Luxury Footer */}

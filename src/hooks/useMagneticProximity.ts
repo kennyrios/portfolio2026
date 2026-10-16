@@ -1,28 +1,32 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 
 interface MagneticProximityOptions {
-  radius?: number;       // Distance in px within which magnetic attraction begins (default: 80)
-  strength?: number;     // Magnetic pull factor 0 - 1 (default: 0.35)
-  active?: boolean;      // Enable/disable
+  radius?: number;       // Distance in px within which magnetic attraction begins
+  strength?: number;     // Magnetic pull factor 0 - 1
+  innerStrength?: number;
+  active?: boolean;
 }
 
+/**
+ * Ultra-High-Performance Magnetic Attraction Hook
+ * - Zero React state re-renders (direct DOM transform updates)
+ * - Local pointer events with bounding rect caching
+ * - GPU-accelerated translate3d transforms
+ * - Automatic spring-back with RAF lerp
+ */
 export function useMagneticProximity<T extends HTMLElement = HTMLDivElement>({
-  radius = 85,
+  radius = 70,
   strength = 0.35,
+  innerStrength = 0,
   active = true,
 }: MagneticProximityOptions = {}) {
-  const elementRef = useRef<T>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isNear, setIsNear] = useState(false);
+  const elementRef = useRef<T | null>(null);
+  const innerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (!active) {
-      setPosition({ x: 0, y: 0 });
-      setIsNear(false);
-      return;
-    }
+    const el = elementRef.current;
+    if (!el || !active) return;
 
-    // Check reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
@@ -32,82 +36,88 @@ export function useMagneticProximity<T extends HTMLElement = HTMLDivElement>({
     let targetY = 0;
     let currentX = 0;
     let currentY = 0;
-    let isTracking = false;
+    let isAnimating = false;
+    let rectCache: DOMRect | null = null;
 
-    const animate = () => {
-      // Smooth lerp towards target
-      currentX += (targetX - currentX) * 0.18;
-      currentY += (targetY - currentY) * 0.18;
+    const render = () => {
+      // Fast lerp interpolation
+      currentX += (targetX - currentX) * 0.22;
+      currentY += (targetY - currentY) * 0.22;
 
-      setPosition({
-        x: Math.round(currentX * 100) / 100,
-        y: Math.round(currentY * 100) / 100,
-      });
+      const diffX = targetX - currentX;
+      const diffY = targetY - currentY;
 
-      if (Math.abs(targetX - currentX) > 0.05 || Math.abs(targetY - currentY) > 0.05) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        isTracking = false;
+      if (Math.abs(diffX) < 0.1 && Math.abs(diffY) < 0.1) {
+        currentX = targetX;
+        currentY = targetY;
+        isAnimating = false;
+      }
+
+      if (el) {
+        el.style.transform = currentX === 0 && currentY === 0 
+          ? '' 
+          : `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+      }
+
+      if (innerRef.current && innerStrength > 0) {
+        const inX = currentX * innerStrength;
+        const inY = currentY * innerStrength;
+        innerRef.current.style.transform = inX === 0 && inY === 0 
+          ? '' 
+          : `translate3d(${inX.toFixed(2)}px, ${inY.toFixed(2)}px, 0)`;
+      }
+
+      if (isAnimating) {
+        rafId = requestAnimationFrame(render);
       }
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const el = elementRef.current;
-      if (!el) return;
+    const startAnimation = () => {
+      if (!isAnimating) {
+        isAnimating = true;
+        rafId = requestAnimationFrame(render);
+      }
+    };
 
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+    const handlePointerEnter = () => {
+      rectCache = el.getBoundingClientRect();
+    };
 
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!rectCache) {
+        rectCache = el.getBoundingClientRect();
+      }
+
+      const centerX = rectCache.left + rectCache.width / 2;
+      const centerY = rectCache.top + rectCache.height / 2;
       const deltaX = e.clientX - centerX;
       const deltaY = e.clientY - centerY;
-      const distance = Math.hypot(deltaX, deltaY);
 
-      // Effective trigger boundary: radius plus half the element's average dimension
-      const maxDistance = radius + Math.max(rect.width, rect.height) / 2;
-
-      if (distance < maxDistance) {
-        // Proximity factor: stronger attraction the closer cursor is
-        const factor = (1 - distance / maxDistance);
-        targetX = deltaX * strength * factor;
-        targetY = deltaY * strength * factor;
-        setIsNear(true);
-
-        if (!isTracking) {
-          isTracking = true;
-          rafId = requestAnimationFrame(animate);
-        }
-      } else if (targetX !== 0 || targetY !== 0) {
-        targetX = 0;
-        targetY = 0;
-        setIsNear(false);
-
-        if (!isTracking) {
-          isTracking = true;
-          rafId = requestAnimationFrame(animate);
-        }
-      }
+      targetX = deltaX * strength;
+      targetY = deltaY * strength;
+      startAnimation();
     };
 
-    const handleMouseLeave = () => {
+    const handlePointerLeave = () => {
+      rectCache = null;
       targetX = 0;
       targetY = 0;
-      setIsNear(false);
-      if (!isTracking) {
-        isTracking = true;
-        rafId = requestAnimationFrame(animate);
-      }
+      startAnimation();
     };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    document.addEventListener('mouseleave', handleMouseLeave);
+    el.addEventListener('pointerenter', handlePointerEnter, { passive: true });
+    el.addEventListener('pointermove', handlePointerMove, { passive: true });
+    el.addEventListener('pointerleave', handlePointerLeave, { passive: true });
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
+      el.removeEventListener('pointerenter', handlePointerEnter);
+      el.removeEventListener('pointermove', handlePointerMove);
+      el.removeEventListener('pointerleave', handlePointerLeave);
       if (rafId) cancelAnimationFrame(rafId);
+      if (el) el.style.transform = '';
+      if (innerRef.current) innerRef.current.style.transform = '';
     };
-  }, [radius, strength, active]);
+  }, [radius, strength, innerStrength, active]);
 
-  return { elementRef, position, isNear };
+  return { elementRef, innerRef };
 }

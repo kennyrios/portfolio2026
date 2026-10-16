@@ -27,36 +27,7 @@ export const LetterRevealHeadline: React.FC<LetterRevealHeadlineProps> = ({
       return;
     }
 
-    let rafId: number;
     let debounceTimer: any = null;
-
-    // Check visibility relative to viewport on scroll
-    const updateVisibility = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      // Element is considered in view when it enters the readable center of the viewport
-      const isInView = rect.top < windowHeight * 0.82 && rect.bottom > windowHeight * 0.12;
-
-      if (isInView && !isVisibleRef.current) {
-        isVisibleRef.current = true;
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-          setHasStarted(true);
-        }, 80);
-      } else if (!isInView && isVisibleRef.current) {
-        isVisibleRef.current = false;
-        clearTimeout(debounceTimer);
-        // Reset when out of view so it always replays on scroll
-        setHasStarted(false);
-      }
-    };
-
-    const handleScroll = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(updateVisibility);
-    };
 
     // Use IntersectionObserver as primary driver with threshold margin
     const observer = new IntersectionObserver(
@@ -89,17 +60,8 @@ export const LetterRevealHeadline: React.FC<LetterRevealHeadlineProps> = ({
       observer.observe(containerRef.current);
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-
-    // Initial check
-    updateVisibility();
-
     return () => {
       observer.disconnect();
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-      cancelAnimationFrame(rafId);
       clearTimeout(debounceTimer);
     };
   }, []);

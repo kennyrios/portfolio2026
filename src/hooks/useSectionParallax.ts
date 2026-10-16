@@ -11,8 +11,7 @@ export interface SectionParallaxConfig {
 
 /**
  * High-performance viewport-relative scroll parallax hook.
- * Calculates how far the target element has traveled through the viewport
- * and applies GPU-accelerated translate3d transforms.
+ * Guarded by IntersectionObserver to eliminate off-screen getBoundingClientRect layout calls.
  */
 export function useSectionParallax<T extends HTMLElement = HTMLDivElement>(
   config: SectionParallaxConfig = {}
@@ -32,62 +31,73 @@ export function useSectionParallax<T extends HTMLElement = HTMLDivElement>(
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
+    const el = ref.current;
+    if (!el) return;
+
     let rafId: number;
+    let isIntersecting = false;
 
     const update = () => {
-      if (!ref.current) return;
-      const el = ref.current;
+      if (!isIntersecting || !el) return;
       const rect = el.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Only compute and transform if the element is visible in or near the viewport
-      if (rect.bottom >= -150 && rect.top <= windowHeight + 150) {
-        // Normalized progress: -0.5 when at bottom edge, 0 when centered, +0.5 when at top edge
-        const elementCenter = rect.top + rect.height / 2;
-        const viewportCenter = windowHeight / 2;
-        const distanceFromCenter = viewportCenter - elementCenter;
+      // Normalized progress: -0.5 when at bottom edge, 0 when centered, +0.5 when at top edge
+      const elementCenter = rect.top + rect.height / 2;
+      const viewportCenter = windowHeight / 2;
+      const distanceFromCenter = viewportCenter - elementCenter;
 
-        // Raw offsets
-        let transY = distanceFromCenter * speedY;
-        let transX = distanceFromCenter * speedX;
+      // Raw offsets
+      let transY = distanceFromCenter * speedY;
+      let transX = distanceFromCenter * speedX;
 
-        // Apply clamping if specified
-        if (maxTranslateY > 0) {
-          transY = Math.max(-maxTranslateY, Math.min(maxTranslateY, transY));
-        }
-        if (maxTranslateX > 0) {
-          transX = Math.max(-maxTranslateX, Math.min(maxTranslateX, transX));
-        }
-
-        let transform = `translate3d(${transX.toFixed(2)}px, ${transY.toFixed(2)}px, 0)`;
-
-        if (rotateSpeed !== 0) {
-          const rotation = (distanceFromCenter * rotateSpeed).toFixed(2);
-          transform += ` rotate(${rotation}deg)`;
-        }
-
-        if (scaleDelta !== 0) {
-          const progress01 = 1 - Math.min(1, Math.abs(distanceFromCenter) / (windowHeight * 0.8));
-          const scale = (1 + progress01 * scaleDelta).toFixed(3);
-          transform += ` scale(${scale})`;
-        }
-
-        el.style.transform = transform;
+      // Apply clamping if specified
+      if (maxTranslateY > 0) {
+        transY = Math.max(-maxTranslateY, Math.min(maxTranslateY, transY));
       }
+      if (maxTranslateX > 0) {
+        transX = Math.max(-maxTranslateX, Math.min(maxTranslateX, transX));
+      }
+
+      let transform = `translate3d(${transX.toFixed(1)}px, ${transY.toFixed(1)}px, 0)`;
+
+      if (rotateSpeed !== 0) {
+        const rotation = (distanceFromCenter * rotateSpeed).toFixed(2);
+        transform += ` rotate(${rotation}deg)`;
+      }
+
+      if (scaleDelta !== 0) {
+        const progress01 = 1 - Math.min(1, Math.abs(distanceFromCenter) / (windowHeight * 0.8));
+        const scale = (1 + progress01 * scaleDelta).toFixed(3);
+        transform += ` scale(${scale})`;
+      }
+
+      el.style.transform = transform;
     };
 
     const handleScroll = () => {
+      if (!isIntersecting) return;
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(update);
     };
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isIntersecting = entry.isIntersecting;
+        if (isIntersecting) {
+          update();
+        }
+      },
+      { rootMargin: '150px 0px 150px 0px' }
+    );
+
+    observer.observe(el);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
 
-    // Initial render trigger
-    update();
-
     return () => {
+      observer.disconnect();
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
       cancelAnimationFrame(rafId);

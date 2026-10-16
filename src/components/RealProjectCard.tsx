@@ -25,6 +25,7 @@ export const RealProjectCard: React.FC<RealProjectCardProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const spotlightRef = useRef<HTMLDivElement>(null);
 
   // Parallax hook driving smooth vertical scroll float & inner media pan
   const effectiveSpeed = columnSpeed ?? (columnIndex === 0 ? 0.08 : -0.07);
@@ -33,16 +34,14 @@ export const RealProjectCard: React.FC<RealProjectCardProps> = ({
     imageSpeed: 0.05,
   });
 
-  // 3D tilt and subtle glare coordinates on mouse move
-  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50, opacity: 0 });
-
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
@@ -57,18 +56,18 @@ export const RealProjectCard: React.FC<RealProjectCardProps> = ({
     const glareX = (x / rect.width) * 100;
     const glareY = (y / rect.height) * 100;
 
-    setTilt({
-      rotateX: Math.round(rotateX * 10) / 10,
-      rotateY: Math.round(rotateY * 10) / 10,
-      glareX,
-      glareY,
-      opacity: 0.35,
-    });
+    card.style.transform = `perspective(1200px) rotateX(${rotateX.toFixed(1)}deg) rotateY(${rotateY.toFixed(1)}deg)`;
+
+    if (spotlightRef.current) {
+      spotlightRef.current.style.background = `radial-gradient(700px circle at ${glareX.toFixed(1)}% ${glareY.toFixed(1)}%, ${accentColor}48 0%, ${accentColor}25 35%, transparent 75%)`;
+    }
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setTilt({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50, opacity: 0 });
+    if (cardRef.current) {
+      cardRef.current.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+    }
   };
 
   const projectNumber = String(index + 1).padStart(2, '0');
@@ -87,7 +86,7 @@ export const RealProjectCard: React.FC<RealProjectCardProps> = ({
         onClick={() => onOpenModal(project)}
         className="group relative flex flex-col justify-between rounded-2xl p-4 sm:p-5 lg:p-6 transition-all duration-300 cursor-pointer overflow-hidden transform-gpu"
         style={{
-          transform: `perspective(1200px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
+          transform: 'perspective(1200px) rotateX(0deg) rotateY(0deg)',
           backgroundColor: isHovered ? '#151520' : 'rgba(18, 18, 22, 0.92)',
           borderColor: isHovered ? accentColor : 'rgba(255, 255, 255, 0.08)',
           borderWidth: '1.5px',
@@ -100,10 +99,11 @@ export const RealProjectCard: React.FC<RealProjectCardProps> = ({
       >
         {/* Ambient Project Brand Glow on Hover with High-Intensity Spotlight */}
         <div
+          ref={spotlightRef}
           className="pointer-events-none absolute -inset-px rounded-2xl transition-opacity duration-300 z-0"
           style={{
             opacity: isHovered ? 1 : 0,
-            background: `radial-gradient(700px circle at ${tilt.glareX}% ${tilt.glareY}%, ${accentColor}48 0%, ${accentColor}25 35%, transparent 75%)`,
+            background: `radial-gradient(700px circle at 50% 50%, ${accentColor}48 0%, ${accentColor}25 35%, transparent 75%)`,
           }}
         />
 
@@ -235,6 +235,7 @@ export const RealProjectCard: React.FC<RealProjectCardProps> = ({
                   alt={`${project.title} showcase`}
                   referrerPolicy="no-referrer"
                   loading="lazy"
+                  decoding="async"
                   onLoad={() => setImageLoaded(true)}
                   onError={() => setImageError(true)}
                   className={`w-full h-full object-cover object-top will-change-transform transition-opacity duration-500 ${

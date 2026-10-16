@@ -5,6 +5,7 @@ import { MagneticElement } from './MagneticElement';
 import { useSectionParallax } from '../hooks/useSectionParallax';
 import { SectionParallaxWatermark } from './SectionParallaxWatermark';
 import { LetterRevealHeadline } from './LetterRevealHeadline';
+import bgBlueUrl from '../assets/bg_blue.png';
 
 interface HeroProps {
   onExploreWorks: () => void;
@@ -22,8 +23,25 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWorks, onContactClick }) =>
     rotateSpeed: 0.01,
     maxTranslateY: 80,
   });
+
   return (
-    <section className="relative min-h-[85vh] flex flex-col justify-between pt-16 sm:pt-24 pb-16 px-6 max-w-7xl mx-auto z-10">
+    <div className="relative w-full overflow-hidden bg-[#09090b]">
+      {/* Attached Artisanal Blue Background (bg_blue.png) */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden" aria-hidden="true">
+        <img
+          src={bgBlueUrl}
+          alt=""
+          decoding="async"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover object-top opacity-100 scale-[1.01]"
+        />
+        {/* Soft bottom vignette to dissolve into dark background */}
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#09090b] via-[#09090b]/85 to-transparent" />
+        {/* Subtle dark film glaze to preserve pristine typography contrast */}
+        <div className="absolute inset-0 bg-[#09090b]/15 mix-blend-multiply" />
+      </div>
+
+      <section className="relative min-h-[85vh] flex flex-col justify-between pt-16 sm:pt-24 pb-16 px-6 max-w-7xl mx-auto z-10">
       {/* Background Architectural Parallax Elements */}
       <SectionParallaxWatermark
         number="00"
@@ -154,5 +172,6 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWorks, onContactClick }) =>
         </div>
       </div>
     </section>
-  );
+  </div>
+);
 };

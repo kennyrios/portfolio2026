@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef, useCallback, useMemo, ReactNode } from 'react';
 import Lenis from 'lenis';
 
 interface LenisContextType {
@@ -26,8 +26,8 @@ interface LenisProviderProps {
 
 export const LenisProvider: React.FC<LenisProviderProps> = ({ children }) => {
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
-  const [velocity, setVelocity] = useState<number>(0);
-  const rafIdRef = useRef<number | null>(null);
+  const lenisRef = useRef<Lenis | null>(null);
+  const velocityRef = useRef<number>(0);
 
   useEffect(() => {
     // Check for reduced motion preference
@@ -37,7 +37,7 @@ export const LenisProvider: React.FC<LenisProviderProps> = ({ children }) => {
     }
 
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // exponential easing
       orientation: 'vertical',
       gestureOrientation: 'vertical',
@@ -46,52 +46,35 @@ export const LenisProvider: React.FC<LenisProviderProps> = ({ children }) => {
       touchMultiplier: 1.5,
     });
 
+    lenisRef.current = lenis;
     setLenisInstance(lenis);
 
-    let currentVelocity = 0;
-    let isDecaying = false;
-
-    // Decay velocity smoothly back to zero when user stops scrolling
-    const decayVelocity = () => {
-      if (Math.abs(currentVelocity) > 0.01) {
-        currentVelocity *= 0.88;
-        setVelocity(currentVelocity);
-        rafIdRef.current = requestAnimationFrame(decayVelocity);
-      } else {
-        currentVelocity = 0;
-        setVelocity(0);
-        isDecaying = false;
-      }
-    };
-
+    // Track velocity in ref without causing cascading React re-renders across the entire app
     const handleScroll = (e: any) => {
-      currentVelocity = e.velocity || 0;
-      setVelocity(currentVelocity);
-      if (!isDecaying) {
-        isDecaying = true;
-        requestAnimationFrame(decayVelocity);
-      }
+      velocityRef.current = e.velocity || 0;
     };
 
     lenis.on('scroll', handleScroll);
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    const animationFrameId = requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
+      lenisRef.current = null;
       setLenisInstance(null);
     };
   }, []);
 
-  const scrollTo = (target: string | HTMLElement | number, options?: any) => {
-    if (lenisInstance) {
-      lenisInstance.scrollTo(target, {
+  const scrollTo = useCallback((target: string | HTMLElement | number, options?: any) => {
+    const activeLenis = lenisRef.current;
+    if (activeLenis) {
+      activeLenis.scrollTo(target, {
         offset: -20,
         duration: 1.2,
         ...options,
@@ -106,10 +89,17 @@ export const LenisProvider: React.FC<LenisProviderProps> = ({ children }) => {
         target.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  };
+  }, []);
+
+  // Stabilize context value so consuming components NEVER re-render on scroll
+  const contextValue = useMemo<LenisContextType>(() => ({
+    lenis: lenisInstance,
+    velocity: 0,
+    scrollTo,
+  }), [lenisInstance, scrollTo]);
 
   return (
-    <LenisContext.Provider value={{ lenis: lenisInstance, velocity, scrollTo }}>
+    <LenisContext.Provider value={contextValue}>
       {children}
     </LenisContext.Provider>
   );

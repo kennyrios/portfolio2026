@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useSectionParallax } from '../hooks/useSectionParallax';
 
 export interface SectionParallaxBridgeProps {
@@ -28,7 +28,7 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
   id,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const runnerDotRef = useRef<HTMLDivElement>(null);
 
   // Parallax hooks for counter-directional typographic runways
   const leftMarqueeRef = useSectionParallax<HTMLDivElement>({
@@ -61,14 +61,16 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
     let rafId: number;
 
     const handleScroll = () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || !runnerDotRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Progress from 0 (entering bottom of screen) to 1 (leaving top of screen)
-      const totalSpan = windowHeight + rect.height;
-      const progress = Math.max(0, Math.min(1, (windowHeight - rect.top) / totalSpan));
-      setScrollProgress(progress);
+      // Only update when close to or within the viewport
+      if (rect.bottom >= -50 && rect.top <= windowHeight + 50) {
+        const totalSpan = windowHeight + rect.height;
+        const progress = Math.max(0, Math.min(1, (windowHeight - rect.top) / totalSpan));
+        runnerDotRef.current.style.left = `${(progress * 92 + 4).toFixed(1)}%`;
+      }
     };
 
     const throttledScroll = () => {
@@ -145,10 +147,9 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
         <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent">
           {/* Moving Glowing Runner Dot */}
           <div
-            className={`absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full ${accentColorMap.bg} shadow-[0_0_10px_currentColor] transition-transform duration-75`}
-            style={{
-              left: `${(scrollProgress * 92 + 4).toFixed(1)}%`,
-            }}
+            ref={runnerDotRef}
+            className={`absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full ${accentColorMap.bg} shadow-[0_0_10px_currentColor] will-change-[left]`}
+            style={{ left: '4%' }}
           />
           {/* Micro tick marks */}
           <div className="absolute inset-0 flex justify-between px-8 opacity-40">
