@@ -5,31 +5,31 @@ import { ScrollReveal } from './ScrollReveal';
 
 export const TechnicalCapabilitiesMatrix: React.FC = () => {
   return (
-    <div className="space-y-8">
+    <div id="capabilities" className="space-y-8">
       {/* Header */}
       <ScrollReveal variant="fade-up" duration={650}>
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-zinc-200">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-white/[0.08]">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-700 font-semibold mb-2">
+            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-400 font-medium mb-2">
               <Cpu className="w-3.5 h-3.5" />
               <span>Core Competencies</span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-zinc-950">
+            <h3 className="text-2xl sm:text-3xl font-display font-medium tracking-tight text-white">
               Technical Capabilities Matrix
             </h3>
           </div>
-          <p className="text-xs font-mono text-zinc-500">
-            Agentic AI · Design Systems · Full-Stack Web
+          <p className="text-xs font-mono text-zinc-400">
+            Frontend Architecture · Dynamic CMS · Mapbox & Real Estate
           </p>
         </div>
       </ScrollReveal>
 
       {/* Desktop & Tablet Matrix Table View */}
       <ScrollReveal variant="fade-up" delay={120} duration={750} distance={30}>
-        <div className="hidden md:block overflow-hidden rounded-2xl border border-zinc-200/90 bg-white/95 backdrop-blur-xs shadow-xs">
+        <div className="hidden md:block overflow-hidden rounded-2xl border border-white/[0.08] bg-[#121216]/80 backdrop-blur-md shadow-2xl">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-zinc-200 bg-zinc-50/75 text-xs font-mono uppercase tracking-wider text-zinc-500">
+              <tr className="border-b border-white/[0.08] bg-white/[0.02] text-xs font-mono uppercase tracking-wider text-zinc-400">
                 <th scope="col" className="py-4 px-6 font-semibold w-[26%]">
                   Domain
                 </th>
@@ -41,39 +41,39 @@ export const TechnicalCapabilitiesMatrix: React.FC = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-200/80 text-sm">
+            <tbody className="divide-y divide-white/[0.06] text-sm">
               {TECHNICAL_CAPABILITIES_MATRIX.map((row) => (
                 <tr
                   key={row.domain}
-                  className="hover:bg-amber-50/20 transition-colors duration-150 group"
+                  className="hover:bg-white/[0.03] transition-colors duration-150 group"
                 >
                   {/* Domain Column */}
                   <td className="py-6 px-6 align-top">
-                    <span className="font-display font-bold text-zinc-950 text-base group-hover:text-amber-800 transition-colors">
+                    <span className="font-display font-medium text-white text-base group-hover:text-amber-300 transition-colors">
                       {row.domain}
                     </span>
                   </td>
 
                   {/* Focus Column */}
-                  <td className="py-6 px-6 align-top text-zinc-600 font-light leading-relaxed text-[13.5px]">
+                  <td className="py-6 px-6 align-top text-zinc-400 font-light leading-relaxed text-[13.5px]">
                     {row.focus}
                   </td>
 
                   {/* Core Toolkit Column */}
-                  <td className="py-6 px-6 align-top text-zinc-700 text-[13.5px] leading-relaxed">
+                  <td className="py-6 px-6 align-top text-zinc-300 text-[13.5px] leading-relaxed">
                     {row.toolkit.map((item, idx) => (
                       <React.Fragment key={item.text}>
                         {item.isPrimary ? (
-                          <strong className="font-semibold text-zinc-950">
+                          <strong className="font-semibold text-white">
                             {item.text}
                           </strong>
                         ) : (
-                          <span className="text-zinc-600 font-light">
+                          <span className="text-zinc-400 font-light">
                             {item.text}
                           </span>
                         )}
                         {idx < row.toolkit.length - 1 && (
-                          <span className="text-zinc-400 font-light mr-1.5">, </span>
+                          <span className="text-zinc-600 font-light mr-1.5">, </span>
                         )}
                       </React.Fragment>
                     ))}
@@ -95,47 +95,43 @@ export const TechnicalCapabilitiesMatrix: React.FC = () => {
             duration={600}
             distance={20}
           >
-            <div className="p-5 bg-white border border-zinc-200/90 rounded-xl space-y-3.5 shadow-xs">
+            <div className="p-6 bg-[#121216] border border-white/[0.08] rounded-2xl space-y-3.5 shadow-md">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-amber-700 font-semibold block mb-1">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-medium block mb-1">
                   Domain
                 </span>
-                <h4 className="font-display font-bold text-zinc-950 text-base">
+                <h4 className="font-display font-medium text-white text-lg">
                   {row.domain}
                 </h4>
               </div>
 
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 font-medium block mb-1">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 font-medium block mb-1">
                   Focus
                 </span>
-                <p className="text-xs text-zinc-600 font-light leading-relaxed">
+                <p className="text-xs text-zinc-400 font-light leading-relaxed">
                   {row.focus}
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-zinc-100">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 font-medium block mb-1">
-                  Core Toolkit & Implementation
+              <div className="pt-2 border-t border-white/[0.06]">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 font-medium block mb-1">
+                  Toolkit
                 </span>
-                <p className="text-xs text-zinc-700 leading-relaxed">
-                  {row.toolkit.map((item, idx2) => (
-                    <React.Fragment key={item.text}>
-                      {item.isPrimary ? (
-                        <strong className="font-semibold text-zinc-950">
-                          {item.text}
-                        </strong>
-                      ) : (
-                        <span className="text-zinc-600">
-                          {item.text}
-                        </span>
-                      )}
-                      {idx2 < row.toolkit.length - 1 && (
-                        <span className="text-zinc-400 mr-1.5">, </span>
-                      )}
-                    </React.Fragment>
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {row.toolkit.map((item) => (
+                    <span
+                      key={item.text}
+                      className={`text-[11px] font-mono px-2 py-0.5 rounded-md ${
+                        item.isPrimary
+                          ? 'bg-white/10 text-white font-medium border border-white/20'
+                          : 'bg-white/[0.03] text-zinc-400 border border-white/[0.06]'
+                      }`}
+                    >
+                      {item.text}
+                    </span>
                   ))}
-                </p>
+                </div>
               </div>
             </div>
           </ScrollReveal>

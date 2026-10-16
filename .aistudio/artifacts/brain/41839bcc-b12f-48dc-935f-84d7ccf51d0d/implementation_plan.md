@@ -1,84 +1,36 @@
-# GitHub Pages Blank Screen Fix & Production Deployment Plan
+# Implementation Plan: Interactive Mouse Pointer Wave & Ripple Canvas
 
-Resolve the blank screen issue on `https://kennyrios.github.io/portfolio2026/` by setting Vite asset resolution to relative paths, verifying the production build, and adding a zero-maintenance GitHub Actions automated deployment workflow.
+Implement a full-viewport, 60fps interactive fluid wave and luminous ripple simulation in the background that reacts organically to the mouse pointer, inspired by the tactile liquid and cloth-like deformation on Mathis Biabiany's portfolio website.
 
-## User Review & Critical Decisions
+## User Requirements & Clarifications
+- **Visual Style**: Fluid luminous ripples that gently distort and illuminate the background canvas.
+- **Physics & Decay**: Smooth organic spring decay with moderate ripple radius, scaling with cursor velocity.
+- **Coverage**: Full viewport across the entire portfolio behind content layers, sleeping when idle for zero battery/CPU overhead.
 
-> [!IMPORTANT]
-> **Root Cause of the Blank Page**: 
-> In Vite, the default `base` configuration is `'/'` (root domain). When deployed to a project repository subpath like `https://kennyrios.github.io/portfolio2026/`, the browser attempts to fetch your JavaScript and CSS files from `https://kennyrios.github.io/assets/index-xxx.js` instead of `https://kennyrios.github.io/portfolio2026/assets/index-xxx.js`. Because the files return 404 Not Found, React fails to mount and the screen appears completely white/blank.
->
-> Setting `base: './'` in `vite.config.ts` solves this immediately by converting all script, link, and asset tags to relative paths. This ensures the app runs properly on both GitHub Pages subpaths (`/portfolio2026/`) and custom domains (e.g., `kennyrios.com`).
+## Architecture & Technical Components
 
----
+1. **`MouseWaveCanvas` Component (`src/components/MouseWaveCanvas.tsx`)**:
+   - Hardware-accelerated 2D Canvas fixed across `inset-0 pointer-events-none z-[1]`.
+   - **Physics Simulation**:
+     - Particle & Wavelet Ring Engine: Tracks cursor position, velocity vector, and acceleration.
+     - Spawns multi-frequency wave rings with exponential spring dampening ($R(t) = R_0 + v \cdot \sin(\omega t) \cdot e^{-\gamma t}$).
+     - Dual-tinted luminous chromatic caustics: Amber-gold crests and cyan/indigo wave troughs with soft radial gradients that blend (`screen` / `lighter`) over the obsidian paper texture.
+     - Velocity-reactive: Rapid mouse swipes produce wider, energetic wake ripples; slow movements produce delicate micro-ripples.
+   - **Performance & Battery Optimization**:
+     - RAF loop auto-sleeps after ripples have fully dissipated (0 idle CPU usage).
+     - Subsampled resolution buffer or high-DPI clamped canvas with automatic frame throttling.
+     - Respects `prefers-reduced-motion`.
 
-## 1. Overview & Core Solution
+2. **Integration with `AmbientDarkAtmosphere.tsx`**:
+   - Mount `MouseWaveCanvas` directly within the fixed atmosphere stack between the base canvas substrate and the parallax auroras.
+   - Harmonize with the procedural linen weave and film grain so the wave feels physical and tactile, as if disturbing liquid ink on textured fine art paper.
 
-- **Issue**: `https://kennyrios.github.io/portfolio2026/` loads `index.html` but scripts fail to load due to absolute root path referencing (`/assets/...`).
-- **Target**: Fix Vite build output to use relative paths (`./assets/...`) so that all scripts, styles, fonts, and interactive canvas components load instantly.
-- **Automation**: Add a GitHub Actions workflow (`.github/workflows/deploy.yml`) so any commit pushed to GitHub automatically builds and deploys without manual folder copying or CLI commands.
+3. **Interactivity & Touch Support**:
+   - Captures both mouse cursor movements on desktop and gentle touch dragging on mobile/tablet devices.
+   - Subtle pulse emission on pointer down / click events for tactile feedback.
 
----
-
-## 2. Technical Architecture & Data Strategy
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                       GitHub Repository                     │
-│                 kennyrios/portfolio2026                    │
-└──────────────────────────────┬──────────────────────────────┘
-                               │ git push main
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│            GitHub Actions Workflow (.github/workflows)      │
-│  1. Checkout repository code                                │
-│  2. Setup Node.js & npm ci                                  │
-│  3. Run `npm run build` (Vite with base: './')              │
-│  4. Upload `dist/` artifact to GitHub Pages                 │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                 GitHub Pages Hosted Site                    │
-│          https://kennyrios.github.io/portfolio2026/         │
-│  • index.html loads ./assets/index.js & ./assets/index.css  │
-│  • React 19 mounts into #root                               │
-│  • Lenis scroll + Interactive Thick Brush Canvas active     │
-│  • Project cards with 3D tilt & magnetic proximity active   │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 3. Implementation Steps
-
-### Step 1: Configure Relative Base in `vite.config.ts`
-- Update `vite.config.ts` to include `base: './'`.
-- Verify that `dist/index.html` contains `<script type="module" crossorigin src="./assets/index-....js">` and `<link rel="stylesheet" crossorigin href="./assets/index-....css">`.
-
-### Step 2: Add Automated GitHub Actions Workflow
-- Create `.github/workflows/deploy.yml` with:
-  - Trigger on push to `main` branch (and manual dispatch).
-  - Setup Node 20.
-  - Install dependencies and run `npm run build`.
-  - Deploy to GitHub Pages using the official `actions/deploy-pages@v4`.
-
-### Step 3: Add `gh-pages` Script Fallback in `package.json`
-- Add a helper script for users who prefer deploying from the command line:
-  - `"predeploy": "npm run build"`
-  - `"deploy": "gh-pages -d dist"`
-
-### Step 4: Verification Build
-- Run `npm run build` and inspect the generated `dist/index.html` to confirm all asset links use `./assets/`.
-
----
-
-## 4. GitHub Repository Settings (After We Apply the Code Fix)
-
-Once the changes are committed and pushed to your GitHub repository:
-1. Go to your repository on GitHub: **https://github.com/kennyrios/portfolio2026**
-2. Click **Settings** (top tab) -> **Pages** (left sidebar).
-3. Under **Build and deployment > Source**:
-   - Select **GitHub Actions** (recommended for automatic deploys whenever you push).
-   - *Alternatively*, if deploying manually from a branch: choose `Deploy from a branch` and select `gh-pages` (or `main` / `dist`).
-4. Refresh `https://kennyrios.github.io/portfolio2026/` (or press Cmd+Shift+R / Ctrl+F5) to see your portfolio live.
+## Verification Plan
+1. **Interactive Motion Check**: Test mouse sweeps across all viewport areas to verify organic wave propagation and smooth spring decay.
+2. **Performance Audit**: Ensure RAF sleep mechanism activates when idle and maintains a steady 60fps during rapid cursor movements.
+3. **Accessibility**: Verify instant deactivation when `prefers-reduced-motion: reduce` is toggled.
+4. **Codebase Validation**: Run `lint_applet` and `compile_applet` to confirm zero errors or regressions.

@@ -9,8 +9,8 @@
 
   body {
     font-family: var(--font-body);
-    background-color: #ffffff;
-    color: #18181b;
+    background-color: #09090b;
+    color: #f4f4f5;
     overflow-x: hidden;
   }
 
@@ -45,19 +45,19 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* Custom subtle scrollbar on white background */
+/* Custom subtle dark scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f4f4f5;
+  background: #09090b;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
+  background: #27272a;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a1a1aa;
+  background: #3f3f46;
 }
 
 @media (prefers-reduced-motion: reduce) {

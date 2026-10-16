@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { RealProject } from '../types/portfolio';
-import { X, ExternalLink, MapPin, Calendar, User, TrendingUp, CheckCircle, Code2 } from 'lucide-react';
+import { X, ExternalLink, MapPin, Calendar, User, TrendingUp, CheckCircle, Code2, Globe } from 'lucide-react';
 import { useLenis } from '../context/LenisContext';
 import { MagneticElement } from './MagneticElement';
 
@@ -32,38 +32,36 @@ export const RealProjectModal: React.FC<RealProjectModalProps> = ({ project, onC
 
   if (!project) return null;
 
-  const accentColor = project.accentColor || '#f59e0b';
+  const accentColor = project.accentColor || '#38bdf8';
 
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-project-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-10 bg-black/60 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-10 bg-black/85 backdrop-blur-xl animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto bg-white border border-zinc-200 rounded-3xl shadow-2xl flex flex-col text-zinc-900"
+        className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto bg-[#0f0f14] border border-white/10 rounded-3xl shadow-2xl flex flex-col text-zinc-100"
         onClick={(e) => e.stopPropagation()}
         data-lenis-prevent
       >
         {/* Sticky Top Bar */}
-        <div className="sticky top-0 z-20 flex items-center justify-between px-6 sm:px-8 py-4 bg-white/95 border-b border-zinc-200 backdrop-blur-md">
+        <div className="sticky top-0 z-20 flex items-center justify-between px-6 sm:px-8 py-4 bg-[#0f0f14]/95 border-b border-white/[0.08] backdrop-blur-md">
           <div className="flex items-center gap-3 text-xs font-mono">
-            <span
-              className="font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-800 border border-zinc-200"
-            >
+            <span className="font-medium uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white/[0.05] text-zinc-300 border border-white/10">
               {project.category}
             </span>
-            <span className="text-zinc-300">/</span>
-            <span className="text-zinc-600 font-medium">{project.client}</span>
+            <span className="text-zinc-600">/</span>
+            <span className="text-zinc-400 font-medium">{project.client}</span>
           </div>
 
           <MagneticElement radius={60} strength={0.4}>
             <button
               type="button"
               onClick={onClose}
-              className="p-2 text-zinc-400 hover:text-zinc-950 rounded-full hover:bg-zinc-100 transition-colors cursor-pointer border border-transparent hover:border-zinc-200"
+              className="p-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/[0.08] transition-colors cursor-pointer border border-transparent hover:border-white/10"
               aria-label="Close dialog"
             >
               <X className="w-5 h-5" />
@@ -76,112 +74,95 @@ export const RealProjectModal: React.FC<RealProjectModalProps> = ({ project, onC
           <div>
             <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-2">
               <span>{project.location}</span>
-              <span>·</span>
+              <span className="text-zinc-600">·</span>
               <span>{project.year}</span>
+              <span className="text-zinc-600">·</span>
+              <span className="text-amber-400 font-medium">{project.role}</span>
             </div>
-            <h2 id="modal-project-title" className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight text-zinc-950 mb-4">
+            <h2 id="modal-project-title" className="text-3xl sm:text-4xl lg:text-5xl font-display font-medium tracking-tight text-white mb-4">
               {project.title}
             </h2>
-            <p className="text-base sm:text-lg text-zinc-600 font-light leading-relaxed max-w-3xl">
+            <p className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed max-w-3xl">
               {project.summary}
             </p>
           </div>
 
           {/* Media Showcase with Browser Chrome */}
-          <div className="relative w-full rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-950 shadow-md">
-            <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-900 border-b border-zinc-800 text-[11px] font-mono text-zinc-400 select-none">
+          <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-[#09090b] shadow-2xl">
+            <div className="flex items-center justify-between px-4 py-2.5 bg-[#141418] border-b border-white/[0.08] text-[11px] font-mono text-zinc-400 select-none">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
               </div>
               <div className="text-zinc-400 font-mono text-xs truncate max-w-sm">
                 https://{project.client.toLowerCase().replace(/[^a-z0-9]/g, '')}.com/showcase
               </div>
-              <div className="w-12" />
+              <div className="flex items-center gap-1.5 text-zinc-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[10px] uppercase font-mono text-emerald-400">Production</span>
+              </div>
             </div>
 
-            <div className="relative bg-zinc-900 flex items-center justify-center min-h-[320px] sm:min-h-[420px]">
+            <div className="relative w-full max-h-[500px] overflow-hidden flex items-center justify-center bg-[#09090b]">
               <img
                 src={project.imageUrl}
                 alt={project.title}
                 referrerPolicy="no-referrer"
+                loading="lazy"
                 className="w-full h-auto max-h-[500px] object-cover object-top"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f14]/80 via-transparent to-transparent pointer-events-none" />
             </div>
           </div>
 
-          {/* Metrics & Tangible Outcomes */}
+          {/* Impact Metrics Breakdown */}
           {project.metrics && project.metrics.length > 0 && (
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-amber-700 font-semibold">
-                <TrendingUp className="w-4 h-4" />
-                <span>Verified Impact & Performance Metrics</span>
+              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-zinc-400">
+                <TrendingUp className="w-4 h-4 text-emerald-400" />
+                <span>Verified Business & Performance Outcomes</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-6 bg-zinc-50 border border-zinc-200 rounded-2xl">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {project.metrics.map((m, idx) => (
-                  <div key={idx} className="border-l-3 pl-4 py-1" style={{ borderColor: accentColor }}>
-                    <p className="text-2xl sm:text-3xl font-display font-bold text-zinc-950 tabular-nums">
+                  <div
+                    key={idx}
+                    className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08]"
+                  >
+                    <p className="text-2xl sm:text-3xl font-display font-semibold text-white tabular-nums">
                       {m.value}
                     </p>
-                    <p className="text-xs font-mono text-zinc-500 mt-1 uppercase tracking-wider">{m.label}</p>
+                    <p className="text-xs font-mono text-zinc-400 mt-1 uppercase tracking-wider">
+                      {m.label}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Project Narrative & Role */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-amber-700 font-semibold flex items-center gap-2">
-              <Code2 className="w-4 h-4" />
-              <span>Engineering Execution & Architecture</span>
+          {/* Deep Description & Architecture */}
+          <div className="space-y-4 pt-4 border-t border-white/[0.08]">
+            <h3 className="text-lg font-display font-medium text-white flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-amber-400" />
+              <span>Project Architecture & Strategic Execution</span>
             </h3>
-            <p className="text-sm sm:text-base text-zinc-700 font-light leading-relaxed bg-zinc-50/50 p-6 rounded-2xl border border-zinc-200/70">
+            <p className="text-zinc-300 font-light leading-relaxed whitespace-pre-line text-sm sm:text-base">
               {project.description}
             </p>
           </div>
 
-          {/* Metadata Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 bg-zinc-50 border border-zinc-200 rounded-2xl text-xs font-mono">
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-zinc-500">
-                <User className="w-3.5 h-3.5" />
-                <span>Design & Dev Role</span>
-              </div>
-              <p className="text-zinc-900 font-semibold">{project.role}</p>
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-zinc-500">
-                <MapPin className="w-3.5 h-3.5" />
-                <span>Client & Market</span>
-              </div>
-              <p className="text-zinc-900 font-semibold">{project.client} · {project.location}</p>
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-zinc-500">
-                <Calendar className="w-3.5 h-3.5" />
-                <span>Production Period</span>
-              </div>
-              <p className="text-zinc-900 font-semibold">{project.year}</p>
-            </div>
-          </div>
-
           {/* Technologies Used */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-amber-700 font-semibold">
-              Production Stack & Tools
+          <div className="space-y-3 pt-4 border-t border-white/[0.08]">
+            <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+              <Code2 className="w-4 h-4 text-zinc-400" />
+              <span>Core Technologies & Tooling</span>
             </h3>
             <div className="flex flex-wrap gap-2">
               {project.technologies.map((tech) => (
                 <span
                   key={tech}
-                  className="px-3.5 py-1.5 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 rounded-lg text-xs font-mono text-zinc-800 transition-colors"
+                  className="px-3 py-1 text-xs font-mono rounded-lg bg-white/[0.04] text-zinc-200 border border-white/10"
                 >
                   {tech}
                 </span>
@@ -189,35 +170,44 @@ export const RealProjectModal: React.FC<RealProjectModalProps> = ({ project, onC
             </div>
           </div>
 
-          {/* Action Links with Magnetic Proximity */}
-          <div className="pt-6 border-t border-zinc-200 flex flex-wrap items-center gap-4">
-            {project.liveUrl && (
-              <MagneticElement radius={70} strength={0.35}>
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-950 hover:bg-zinc-800 text-white font-semibold text-xs font-mono rounded-xl transition-all shadow-md hover:shadow-xl cursor-pointer"
-                >
-                  <span>Visit Production Site</span>
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </MagneticElement>
-            )}
+          {/* Modal Actions */}
+          <div className="pt-6 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
+            <div className="text-xs font-mono text-zinc-400">
+              <span>Client: </span>
+              <strong className="text-white font-medium">{project.client}</strong>
+              <span className="mx-2">·</span>
+              <span>Year: </span>
+              <strong className="text-white font-medium">{project.year}</strong>
+            </div>
 
-            {project.figmaUrl && (
-              <MagneticElement radius={70} strength={0.35}>
-                <a
-                  href={project.figmaUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 text-zinc-800 font-medium text-xs font-mono rounded-xl transition-all cursor-pointer"
-                >
-                  <span>Open Figma System</span>
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </MagneticElement>
-            )}
+            <div className="flex items-center gap-3">
+              {project.liveUrl && (
+                <MagneticElement radius={60} strength={0.35}>
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-mono font-semibold transition-colors shadow-lg cursor-pointer"
+                  >
+                    <span>Visit Live Website</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </MagneticElement>
+              )}
+              {project.figmaUrl && (
+                <MagneticElement radius={60} strength={0.35}>
+                  <a
+                    href={project.figmaUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white text-zinc-300 hover:text-zinc-950 border border-white/10 hover:border-white text-xs font-mono font-medium transition-colors cursor-pointer"
+                  >
+                    <span>View Interactive Figma Prototype</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </MagneticElement>
+              )}
+            </div>
           </div>
         </div>
       </div>

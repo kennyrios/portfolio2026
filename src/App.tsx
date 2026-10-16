@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import { RealProject, PlainBrushColorKey } from './types/portfolio';
-import { ThickPlainBrushScrollCanvas } from './components/ThickPlainBrushScrollCanvas';
-import { PlainColorBar } from './components/PlainColorBar';
+import React, { useState } from 'react';
+import { RealProject } from './types/portfolio';
+import { AmbientDarkAtmosphere } from './components/AmbientDarkAtmosphere';
 import { Navigation } from './components/Navigation';
 import { IntroScrollHero } from './components/IntroScrollHero';
 import { Hero } from './components/Hero';
@@ -16,68 +15,35 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { RealProjectModal } from './components/RealProjectModal';
 import { LenisProvider, useLenis } from './context/LenisContext';
+import { SectionParallaxBridge } from './components/SectionParallaxBridge';
 
 function PortfolioApp() {
-  const [brushColor, setBrushColor] = useState<PlainBrushColorKey>('sunlight');
   const [selectedProject, setSelectedProject] = useState<RealProject | null>(null);
   const { scrollTo } = useLenis();
 
-  // Dynamically adapt the plain brush color across sections as you scroll
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollPos = window.scrollY;
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = docHeight > 0 ? scrollPos / docHeight : 0;
-
-          let targetColor: PlainBrushColorKey = 'sunlight';
-          if (progress < 0.28) {
-            targetColor = 'sunlight'; // Intro & Hero: Soft Sunlight Pale Yellow
-          } else if (progress < 0.65) {
-            targetColor = 'peach'; // Works: Soft Pale Peach
-          } else if (progress < 0.85) {
-            targetColor = 'mint'; // About & Services: Soft Mint / Sage
-          } else {
-            targetColor = 'lavender'; // Contact: Soft Pale Lavender
-          }
-
-          setBrushColor((prev) => (prev !== targetColor ? targetColor : prev));
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const handleScrollToContact = () => {
-    scrollTo('#contact', { offset: -30, duration: 1.4 });
+    scrollTo('#contact', { offset: -40, duration: 1.4 });
   };
 
   const handleScrollToWorks = () => {
-    scrollTo('#works', { offset: -30, duration: 1.2 });
+    scrollTo('#works', { offset: -40, duration: 1.2 });
   };
 
   const handleScrollDownFromIntro = () => {
-    scrollTo('#hero-content', { offset: -20, duration: 1.2 });
+    scrollTo('#hero-content', { offset: -30, duration: 1.2 });
   };
 
   return (
-    <div className="relative min-h-screen bg-white text-zinc-900 font-sans selection:bg-amber-200/50 selection:text-zinc-950">
-      {/* Thick Plain Light Color Brush Canvas (Fluid Kinematics, No 3D, No Stella on scroll back) */}
-      <ThickPlainBrushScrollCanvas colorKey={brushColor} />
+    <div className="relative min-h-screen bg-[#09090b] text-zinc-100 font-sans selection:bg-white/20 selection:text-white">
+      {/* Mathis Biabiany Style Ambient Lighting & Grain Atmosphere */}
+      <AmbientDarkAtmosphere />
 
-      {/* Top Navigation Bar with authentic Kenny Rios SVG Monogram Logo */}
+      {/* Floating Dark Glass Navigation Bar */}
       <Navigation onContactClick={handleScrollToContact} />
 
       {/* Main Content Sections */}
       <main className="relative z-10">
-        {/* Creative Logo Intro Scroll Animation */}
+        {/* Monogram Intro Animation */}
         <IntroScrollHero onScrollDown={handleScrollDownFromIntro} />
 
         <div id="hero-content">
@@ -87,21 +53,83 @@ function PortfolioApp() {
           />
         </div>
 
+        {/* Parallax Bridge: Hero → Works */}
+        <SectionParallaxBridge
+          sectionIndex="01 // 03"
+          fromLabel="OVERVIEW & IMPACT"
+          toLabel="SELECTED WORKS"
+          marqueePrimary={[
+            'SELECTED WORKS',
+            'AVENUE LIVING ASSET MANAGEMENT',
+            'MINI MALL STORAGE',
+            'DYNAMIC MAPPING',
+            'DESIGN SYSTEMS',
+          ]}
+          marqueeSecondary={[
+            'CALGARY, CANADA',
+            '60FPS COMPOSITING',
+            'ENTERPRISE ARCHITECTURE',
+            'TYPESCRIPT',
+            'REACT 19',
+          ]}
+          coordinates="51.0447° N · 114.0719° W"
+          accent="amber"
+        />
+
+        {/* Mathis Biabiany Card Presentation & Projects Showcase */}
         <ProjectsSection onSelectProject={setSelectedProject} />
 
+        {/* Parallax Bridge: Works → About */}
+        <SectionParallaxBridge
+          sectionIndex="02 // 03"
+          fromLabel="FEATURED PORTFOLIO"
+          toLabel="PHILOSOPHY & CAPABILITIES"
+          marqueePrimary={[
+            'ARCHITECTURAL PHILOSOPHY',
+            'SCALABLE ECOSYSTEMS',
+            'FULL-CYCLE UI/UX',
+            'MAPBOX GL INTERACTION',
+            'MODULAR CMS',
+          ]}
+          marqueeSecondary={[
+            'WCAG AA COMPLIANT',
+            'HEADLESS WORDPRESS',
+            'FIGMA TO PRODUCTION',
+            'CALGARY HEADQUARTERS',
+          ]}
+          coordinates="51.0447° N · 114.0719° W"
+          accent="cyan"
+        />
+
+        {/* About, Core Philosophy & Technical Capabilities Matrix */}
         <AboutSection />
 
+        {/* Parallax Bridge: About → Contact */}
+        <SectionParallaxBridge
+          sectionIndex="03 // 03"
+          fromLabel="TECHNICAL MATRIX"
+          toLabel="DIRECT INQUIRIES"
+          marqueePrimary={[
+            'LET’S BUILD SOMETHING EXCEPTIONAL',
+            'SENIOR ARCHITECTURE',
+            'CONTRACT ENGAGEMENTS',
+            'CALGARY & REMOTE',
+          ]}
+          marqueeSecondary={[
+            'KENNYRGRAFICO@GMAIL.COM',
+            'AVAILABLE FOR SELECTED CLIENTS',
+            'ESTABLISHED 2016',
+          ]}
+          coordinates="51.0447° N · 114.0719° W"
+          accent="emerald"
+        />
+
+        {/* Contact & Inquiries */}
         <ContactSection />
       </main>
 
-      {/* Clean Light Footer */}
+      {/* Dark Luxury Footer */}
       <Footer />
-
-      {/* Plain Color Switcher Bar */}
-      <PlainColorBar
-        currentColor={brushColor}
-        onColorChange={setBrushColor}
-      />
 
       {/* Case Study Fullscreen Lightbox / Modal */}
       <RealProjectModal

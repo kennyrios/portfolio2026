@@ -1,7 +1,10 @@
 import React from 'react';
-import { ArrowDown, ArrowUpRight, Paintbrush } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 import { MagneticElement } from './MagneticElement';
+import { useSectionParallax } from '../hooks/useSectionParallax';
+import { SectionParallaxWatermark } from './SectionParallaxWatermark';
+import { LetterRevealHeadline } from './LetterRevealHeadline';
 
 interface HeroProps {
   onExploreWorks: () => void;
@@ -9,59 +12,88 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onExploreWorks, onContactClick }) => {
+  const statsParallaxRef = useSectionParallax<HTMLDivElement>({
+    speedY: 0.08,
+    maxTranslateY: 45,
+  });
+
+  const decorWireframeRef = useSectionParallax<HTMLDivElement>({
+    speedY: -0.18,
+    rotateSpeed: 0.01,
+    maxTranslateY: 80,
+  });
   return (
-    <section className="relative min-h-[86vh] flex flex-col justify-between pt-16 sm:pt-20 pb-12 px-6 max-w-6xl mx-auto z-10">
-      {/* Top Location & Email Strip */}
+    <section className="relative min-h-[85vh] flex flex-col justify-between pt-16 sm:pt-24 pb-16 px-6 max-w-7xl mx-auto z-10">
+      {/* Background Architectural Parallax Elements */}
+      <SectionParallaxWatermark
+        number="00"
+        title="CALGARY / SENIOR ARCHITECT"
+        speedY={-0.12}
+        align="right"
+        accent="amber"
+      />
+
+      {/* Subtle Floating Parallax Architectural Grid lines */}
+      <div
+        ref={decorWireframeRef}
+        className="absolute top-1/4 right-8 w-64 h-64 border border-dashed border-white/[0.06] rounded-full pointer-events-none -z-10 will-change-transform hidden lg:block"
+      />
+
+      {/* Top Meta Status Strip */}
       <ScrollReveal variant="fade-up" delay={50} duration={600}>
-        <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-zinc-500">
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-800 font-medium">Based in Canada</span>
-            <span aria-hidden="true" className="text-zinc-300">·</span>
-            <span>Available for High-Impact Projects</span>
-            <span aria-hidden="true" className="text-zinc-300">·</span>
+        <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-zinc-400">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+            <span className="text-zinc-200 font-medium">Based in Calgary, Canada</span>
+            <span aria-hidden="true" className="text-zinc-700">·</span>
+            <span>Available for Selected Engagements</span>
+            <span aria-hidden="true" className="text-zinc-700">·</span>
             <a
               href="mailto:kennyrgrafico@gmail.com"
-              className="text-amber-700 hover:text-amber-800 font-medium transition-colors"
+              className="text-amber-400 hover:text-amber-300 font-medium transition-colors"
             >
               kennyrgrafico@gmail.com
             </a>
           </div>
-          <div className="text-zinc-400 hidden sm:block">
-            <span>Web Engineering · Product UI/UX · Design Systems</span>
+          <div className="text-zinc-500 hidden sm:block tracking-wider uppercase text-[11px]">
+            <span>Web Architecture · Dynamic Systems · UI/UX Research</span>
           </div>
         </div>
       </ScrollReveal>
 
-      {/* Main Editorial Headline */}
-      <div className="my-auto py-12 lg:py-16">
-        <div className="max-w-4xl space-y-6">
+      {/* Main Editorial Hero Headline */}
+      <div className="my-auto py-12 lg:py-20">
+        <div className="max-w-5xl space-y-8">
           <ScrollReveal variant="fade-up" delay={120} duration={600}>
-            <p className="text-xs font-mono uppercase tracking-widest text-amber-700 font-semibold">
-              Kenny Rios — Web Developer & UI/UX Designer
-            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs font-mono text-zinc-300">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>Senior Web Designer & Frontend Architect</span>
+            </div>
           </ScrollReveal>
 
-          <ScrollReveal variant="fade-up" delay={200} duration={700}>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight text-zinc-950 text-balance leading-[1.08]">
-              Crafting conversion-driven web systems & tactile digital products.
-            </h1>
-          </ScrollReveal>
+          <LetterRevealHeadline
+            text="Crafting conversion-driven web systems & tactile digital experiences."
+            className="text-3xl sm:text-5xl lg:text-6xl xl:text-[4.75rem] leading-[1.08]"
+            staggerMs={30}
+            durationMs={950}
+            initialDelayMs={140}
+          />
 
           <ScrollReveal variant="fade-up" delay={280} duration={700}>
-            <p className="text-base sm:text-lg text-zinc-600 font-light leading-relaxed max-w-2xl text-balance">
-              Over 8 years architecting responsive web platforms, dynamic portals, and design systems for enterprise organizations in Canada and the United States. Currently leading web design and engineering at Avenue Living and Mini Mall Storage.
+            <p className="text-base sm:text-xl text-zinc-400 font-light leading-relaxed max-w-3xl text-balance">
+              Over 8 years architecting scalable web ecosystems, dynamic CMS frameworks, interactive map engines, and design systems for premier North American enterprises—including Avenue Living Asset Management and Mini Mall Storage Properties.
             </p>
           </ScrollReveal>
 
           <ScrollReveal variant="fade-up" delay={360} duration={650}>
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <div className="pt-4 flex flex-wrap items-center gap-4">
               <MagneticElement radius={75} strength={0.35} innerStrength={0.15}>
                 <button
                   type="button"
                   onClick={onExploreWorks}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-zinc-950 hover:bg-zinc-800 text-white font-semibold text-xs rounded-xl transition-all shadow-sm cursor-pointer hover:shadow-lg"
+                  className="inline-flex items-center gap-2.5 px-7 py-4 bg-white hover:bg-zinc-200 text-zinc-950 font-semibold font-mono text-xs rounded-full transition-all shadow-xl cursor-pointer hover:scale-[1.02]"
                 >
-                  <span>Explore Selected Work</span>
+                  <span>Explore Selected Works</span>
                   <ArrowDown className="w-3.5 h-3.5" />
                 </button>
               </MagneticElement>
@@ -70,10 +102,10 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWorks, onContactClick }) =>
                 <button
                   type="button"
                   onClick={onContactClick}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 text-xs font-medium rounded-xl transition-all cursor-pointer hover:border-zinc-300 hover:shadow-sm"
+                  className="inline-flex items-center gap-2.5 px-7 py-4 bg-white/[0.05] hover:bg-white/10 border border-white/10 hover:border-white/20 text-white text-xs font-mono font-medium rounded-full transition-all cursor-pointer"
                 >
-                  <span>Let's Talk</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  <span>Start a Conversation</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
                 </button>
               </MagneticElement>
             </div>
@@ -81,48 +113,45 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWorks, onContactClick }) =>
         </div>
       </div>
 
-      {/* Metric Strips & Thick Brush Prompt */}
-      <div className="pt-8 border-t border-zinc-200">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+      {/* Impact Metric Ribbons with Subtle Scroll Float */}
+      <div ref={statsParallaxRef} className="pt-10 border-t border-white/[0.08] will-change-transform">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           <ScrollReveal variant="fade-up" delay={100} duration={600}>
-            <p className="text-2xl sm:text-3xl font-display font-bold text-zinc-950 tabular-nums">
-              25+
-            </p>
-            <p className="text-xs text-zinc-500 font-mono mt-0.5">Shipped Web & UI Projects</p>
+            <div className="border-l border-white/15 pl-4">
+              <p className="text-3xl sm:text-4xl font-display font-semibold text-white tabular-nums">
+                25+
+              </p>
+              <p className="text-xs text-zinc-400 font-mono mt-1">Shipped Web Platforms</p>
+            </div>
           </ScrollReveal>
 
           <ScrollReveal variant="fade-up" delay={200} duration={600}>
-            <p className="text-2xl sm:text-3xl font-display font-bold text-zinc-950 tabular-nums">
-              8+
-            </p>
-            <p className="text-xs text-zinc-500 font-mono mt-0.5">Years Design & Dev Experience</p>
+            <div className="border-l border-white/15 pl-4">
+              <p className="text-3xl sm:text-4xl font-display font-semibold text-white tabular-nums">
+                8+
+              </p>
+              <p className="text-xs text-zinc-400 font-mono mt-1">Years Design & Dev Exp</p>
+            </div>
           </ScrollReveal>
 
           <ScrollReveal variant="fade-up" delay={300} duration={600}>
-            <p className="text-2xl sm:text-3xl font-display font-bold text-zinc-950 tabular-nums">
-              60+
-            </p>
-            <p className="text-xs text-zinc-500 font-mono mt-0.5">Enterprise Locations Mapped</p>
+            <div className="border-l border-white/15 pl-4">
+              <p className="text-3xl sm:text-4xl font-display font-semibold text-white tabular-nums">
+                15,000+
+              </p>
+              <p className="text-xs text-zinc-400 font-mono mt-1">Real Estate Assets Mapped</p>
+            </div>
           </ScrollReveal>
 
           <ScrollReveal variant="fade-up" delay={400} duration={600}>
-            <p className="text-2xl sm:text-3xl font-display font-bold text-zinc-950 tabular-nums">
-              100%
-            </p>
-            <p className="text-xs text-zinc-500 font-mono mt-0.5">Design-to-Code Delivery</p>
+            <div className="border-l border-white/15 pl-4">
+              <p className="text-3xl sm:text-4xl font-display font-semibold text-white tabular-nums">
+                +55%
+              </p>
+              <p className="text-xs text-zinc-400 font-mono mt-1">Average Page Speed Gains</p>
+            </div>
           </ScrollReveal>
         </div>
-
-        {/* Prompt */}
-        <ScrollReveal variant="fade-up" delay={500} duration={600}>
-          <div className="flex items-center justify-between text-xs text-zinc-500 font-mono pt-4 border-t border-zinc-100">
-            <div className="flex items-center gap-2">
-              <Paintbrush className="w-3.5 h-3.5 text-amber-700" />
-              <span>Scroll down or up to watch the wide artist brush actively paint across the canvas</span>
-            </div>
-            <span className="hidden sm:inline text-zinc-400">Extra thick flat stroke · Real-time brush head motion</span>
-          </div>
-        </ScrollReveal>
       </div>
     </section>
   );
