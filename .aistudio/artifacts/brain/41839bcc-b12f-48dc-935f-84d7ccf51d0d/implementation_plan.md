@@ -1,101 +1,112 @@
-# Artisanal Torn Paper Horizon & Organic Paper Sway
+# Deep-Sea Fog Atmosphere & Ingrassia-Style Scroll Animations
 
-Seamlessly transforms the top transition of the second section into multi-layered, deckled artisanal torn paper with natural paper fiber roughness and gentle organic sway, perfectly unified with the blue textured paper background and free of any artificial light-colored borders.
+Revised implementation plan incorporating Daniel Ingrassia (`ingrassiadaniel.it`) inspired scroll-driven animations and multi-speed deep-sea volumetric fog overlays inside `AmbientDarkAtmosphere`.
 
 ## User Review & Critical Decisions
 
 > [!IMPORTANT]
-> The following choices were confirmed in the interactive clarification session:
-> - **Motion Behavior**: Subtle organic drift with gentle paper sway (harmonic, low-frequency atmospheric motion resembling paper layers suspended in a calm room or gentle breeze).
-> - **Edge Aesthetic**: Multi-layered deckled artisanal paper with natural fiber micro-roughness, replacing the previous ocean water waves with tactile handcrafted papermaking edges.
-> - **Palette & Blending**: 100% color-matched to the deep cerulean and teal hues of `bg_blue.png`, eliminating bright cyan/white foam strokes or artificial border highlights for an authentic, seamless material blend.
-
-- **Confirmed Decision 1**: Multi-layered deckled torn paper edge with layered depth (3 offset torn paper sheets with natural deckle contours).
-- **Confirmed Decision 2**: Subtle paper sway animation using GPU-accelerated harmonic transforms without CPU overhead.
-- **Confirmed Decision 3**: Complete removal of light-colored border strokes (`#fef08a`, `#e0f2fe`, cyan foam highlights, and drop-shadows that create an artificial halo).
+> This revised plan expands beyond static background fog to encompass Daniel Ingrassia's signature scroll dynamics:
+> - **Multi-Speed Deep-Sea Fog Strata**: Dual slow-moving volumetric fog layers in `AmbientDarkAtmosphere` that track at decoupled scroll parallax speeds (`0.05×` and `0.18×`) to induce tangible three-dimensional water volume.
+> - **Scroll Velocity-Coupled Card Inertia**: Project showcase cards dynamically respond to scroll momentum with a subtle, fluid Y-axis tilt/skew (`±1.5deg` damping curve) that settles smoothly when scrolling stops.
+> - **Scroll-Driven Particle & Strata Morphing**: Bioluminescent organisms and marine snow swell into cohesive hydrodynamic streams during rapid scroll and blossom outward during calm reading pauses.
+> - **Understated Depth Indicator**: A subtle, quiet vertical depth coordinate (e.g., `Surface // 0m` → `Twilight // 250m` → `Midnight // 1,000m` → `Abyss // 4,000m`) subtly tracking page progression.
 
 ---
 
 ## 1. Overview & Core Concept
 
-- **What It Does**: Replaces the stylized ocean wave ribbon at the top of Section 2 (`#hero-content`) with an organic, multi-layered deckled torn paper boundary. As the user scrolls from Section 1 (the warm, sunlit monogram paper) to Section 2 (the deep blue architectural portfolio), Section 2 enters as a physical torn sheet of heavy watercolor/printmaking paper whose fibrous, deckled edge sways with organic realism.
-- **Target Audience / Persona**: Creative directors, architectural firms, and senior design leaders reviewing Kenny's portfolio who value authentic craft, print-era tactility, and zero generic "AI template" aesthetics.
-- **Key Value**: Replaces digital water tropes with a domain-authentic editorial printmaking metaphor (sunlit handmade paper transitioning into deep Prussian-blue cyanotype paper), achieving complete visual unity with `bg_blue.png`.
+- **What It Delivers**:
+  1. **Secondary Deep-Sea Fog Overlays**: Integrated into `AmbientDarkAtmosphere`, featuring organic Perlin noise smoke forms rendered on an optimized canvas with soft cyan (`#22d3ee`) and turquoise (`#2dd4bf`) luminance glazes moving at differential scroll speeds.
+  2. **Ingrassia-Inspired Scroll Dynamics**:
+     - Fluid momentum physics on UI elements (smooth velocity-based inertia).
+     - Morphing particle dynamics in the background based on scroll rate and scroll direction.
+     - Section watermark and editorial typography with differential speed parallax.
+- **Aesthetic Goal**: Bring the high-production Awwwards-caliber motion craft of Daniel Ingrassia into Kenny Rios's portfolio, reinforcing his status as a Senior Full-Stack Architect with flawless frontend execution.
 
 ---
 
-## 2. User Experience & Visual Design
+## 2. User Experience & Motion Choreography
 
-### Key User Flows
-1. **Intro Viewing (Section 1)**: User experiences the pinned sunlit paper stage with the monogram and architectural kicker.
-2. **Scroll Initiation / "Enter Portfolio"**: As the user begins scrolling, the second section rises. Instead of a hard card line or shiny wave crest, a natural, fibrous torn edge of deep blue deckled paper laps organically over the sunlit paper.
-3. **Resting State**: When paused anywhere during the overlap or at the top of Section 2, the torn paper sheets exhibit a breathing, subtle sway ($4\text{px}$–$6\text{px}$ slow harmonic drift over $14\text{s}$–$20\text{s}$), giving the interface life without distraction.
-4. **Seamless Ingress**: The body of the torn paper sheets melts downward into `bg_blue.png` with identical pigment matching (`#092837`, `#0c354a`, `#0d3b51`), leaving zero visible lines, borders, or color steps.
+### A. Deep-Sea Fog Layering (`AmbientDarkAtmosphere`)
+- **Far Stratum (Velocity: 0.05×)**:
+  - Expansive, slow-drifting deep oceanic clouds with soft cyan/indigo gradation.
+  - Undulates with a slow 8-second sinus rhythm, simulating deep oceanic thermoclines.
+- **Mid Stratum (Velocity: 0.18×)**:
+  - Billowing Perlin smoke tendrils with turquoise feathered contours.
+  - Directly displaces vertically with scroll velocity, sliding behind project cards to establish clear depth planes.
 
-### Visual Identity & Theme
-- **Aesthetic Direction**: Fine-art printmaking, archival stationery, cyanotype architectural monograph.
-- **Color Palette**:
-  - *Deep Archival Blue (Base Paper Mass)*: `#092837` to `#0d3b51` (matches the exact top pixels of `bg_blue.png`).
-  - *Secondary Torn Layer (Shadow Deckle)*: `#061d2a` (adds subtle under-tear depth where fibers overlap).
-  - *Tertiary Accent Layer (Foreground Fibers)*: `#0b3348` with soft ambient fiber grain.
-  - *No Light-Colored Borders*: Removed all white, cyan, and gold crest strokes. The edge is defined strictly by the organic silhouette and subtle paper casting shadow.
-- **Edge Geometry & Texture**:
-  - High-frequency micro-irregularities (simulating torn paper fibers and deckled pulp edges created by hand-tearing along a bone folder).
-  - Multi-tier tear: 3 overlapping paper strata torn at slightly differing angles and depths.
-
-### Motion & Micro-Interactions
-- **Gentle Paper Sway**:
-  - Keyframe `paperSwayLayer1`: 20s ease-in-out infinite horizontal drift ($\pm 1.5\%$) with subtle rotational micro-flex ($\pm 0.4^\circ$).
-  - Keyframe `paperSwayLayer2`: 14s ease-in-out infinite counter-drift.
-  - Keyframe `paperSwayLayer3`: 9s gentle vertical breathing ($\pm 3\text{px}$).
-- **Accessibility**: Automatic fallback to static, non-moving deckled paper under `prefers-reduced-motion: reduce`.
+### B. Scroll-Driven Physics (Daniel Ingrassia Motion Language)
+- **Velocity Skew / Tilt**:
+  - Project cards in `ProjectsSection` and metric boxes in `Hero` hook into Lenis scroll velocity.
+  - Fast downward scroll induces a gentle `skewY(clamp(-1.8deg, velocity * 0.03, 1.8deg))` with spring damping back to `0deg`.
+- **Fluid Morphing Background**:
+  - In `BioluminescenceScrollCanvas`, high scroll velocity pulls dinoflagellates and marine snow into streamlined convective flow lines, which smoothly bloom into organic brownian drift when stationary.
+- **Quiet Depth Coordinate**:
+  - Minimalist fixed vertical indicator along the left or right margin indicating ocean depth meters in tabular figures, harmonizing with the editorial aesthetic.
 
 ---
 
 ## 3. Key Product Decisions & Trade-Offs
 
-- **Decision 1: SVG Vector Deckle Paths vs. Heavy Bitmap Alpha Mask**
-  - *Chosen Approach*: Multi-layered SVG paths with procedural high-frequency torn paper coordinates and SVG feTurbulence paper grain filter.
-  - *Why*: SVG vector paths scale crisply to any retina/4K display, load instantly without network payloads, and animate via GPU compositing (`transform: translate3d`) at steady 60fps/120fps with 0% CPU drag.
-  - *Alternatives Considered*: PNG alpha textures (heavy download, risk of pixelation or seams on wide screens).
-- **Decision 2: Color Unification without Light Edge Strokes**
-  - *Chosen Approach*: Fill layers with exact gradient stops sampled from `bg_blue.png` (`#061e2a` $\to$ `#092837` $\to$ `#0d3b51`). Eliminate bright foam lines and white borders completely.
-  - *Why*: Fulfills the user's explicit directive: "without the light clolored border perfectly blending with the blue texture paper background".
-  - *Alternatives Considered*: Retaining a 0.5px white paper core highlight (discarded per user instruction to ensure total harmony with the background).
+- **Decision 1: Canvas 2D Fog vs Three.js Shader Fog**
+  - *Chosen Approach*: Multi-layered Canvas 2D with procedural organic Perlin smoke clusters and sine wave modulation.
+  - *Why*: Delivers 60fps performance across mobile and desktop without shader compilation overhead or WebGL context recreation issues, running synchronously with Lenis scroll callbacks.
+  - *Alternative Considered*: Full volumetric Three.js raymarched fog was considered, but consumes significant GPU fillrate on mobile and laptops on battery.
+
+- **Decision 2: CSS Transform GPU Compositing for Scroll Skew**
+  - *Chosen Approach*: Apply velocity skew strictly via `transform: translate3d(0, 0, 0) skewY(...)` using `requestAnimationFrame`.
+  - *Why*: Never forces layout reflows or repaints; executes entirely on the GPU compositor thread for ultra-fluid motion.
 
 ---
 
-## 4. Technical Architecture & Data Strategy
+## 4. Technical Architecture & Component Flow
 
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│ SECTION 1: IntroScrollHero (Pinned Sunlit Paper & Monogram Stage)     │
-└────────────────────────────────────────────────────────────────────────┘
-                                    ▲
-                         [PARALLAX OVERLAP ZONE]
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│ SECTION 2: #hero-content (z-20, Full Viewport Width, Straight Corners)  │
-│                                                                        │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ <TornPaperSurfaceHorizon /> (z-30, pointer-events-none)           │  │
-│  │  ├─ feTurbulence / feDisplacementMap (paper grain & fiber noise) │  │
-│  │  ├─ Layer 1: Under-Tear Deckle Sheet (#061d2a, 20s sway)        │  │
-│  │  ├─ Layer 2: Mid Torn Paper Strata (#0a2d3e, 14s sway)          │  │
-│  │  └─ Layer 3: Foreground Deckled Horizon (#092837 -> #0d3b51)    │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-│                                                                        │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ <Hero /> (z-10, Content & Status Strip)                          │  │
-│  │  └─ bg_blue.png (Artisanal Cyanotype Paper Background)           │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-└────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                       PORTFOLIO VIEWPORT                        │
+│                                                                 │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │             AmbientDarkAtmosphere (Fixed, z: 0)           │  │
+│  │                                                           │  │
+│  │   ┌────────────────────────────────────────────────────┐  │  │
+│  │   │ Deep Nocturnal Gradient Base                       │  │  │
+│  │   └────────────────────────────────────────────────────┘  │  │
+│  │   ┌────────────────────────────────────────────────────┐  │  │
+│  │   │ DeepSeaFogCanvas (NEW: Dual-Speed Mist Overlays)   │  │  │
+│  │   │   • Stratum A (0.05x scroll speed, cyan haze)      │  │  │
+│  │   │   • Stratum B (0.18x scroll speed, turquoise swell)│  │  │
+│  │   └────────────────────────────────────────────────────┘  │  │
+│  │   ┌────────────────────────────────────────────────────┐  │  │
+│  │   │ MouseWaveCanvas (Fluid Liquid Surface Waves)       │  │  │
+│  │   └────────────────────────────────────────────────────┘  │  │
+│  │   ┌────────────────────────────────────────────────────┐  │  │
+│  │   │ BioluminescenceScrollCanvas (Organism Morphing)    │  │  │
+│  │   └────────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │             Lenis Smooth Scroll & Velocity Bus            │  │
+│  │  ┌──────────────────────────────────────────────────────┐ │  │
+│  │  │ ProjectsSection (with dynamic scroll velocity skew)  │ │  │
+│  │  ├──────────────────────────────────────────────────────┤ │  │
+│  │  │ SectionParallaxBridge & Parallax Watermarks          │ │  │
+│  │  ├──────────────────────────────────────────────────────┤ │  │
+│  │  │ Ocean Depth Coordinate Strip                         │ │  │
+│  │  └──────────────────────────────────────────────────────┘ │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### Component & State Mapping
-
-| Component | Responsibility & Interaction |
-| :--- | :--- |
-| `TornPaperSurfaceHorizon.tsx` (formerly `OceanSurfaceWaves`) | Renders 3 layered deckled paper horizons with procedural fiber silhouettes, paper grain filtering, and gentle organic sway animations. |
-| `src/App.tsx` | Embeds `TornPaperSurfaceHorizon` at the top of `#hero-content`, retaining straight corners and smooth scroll cues. |
-| `src/components/Hero.tsx` | Hosts the main content, providing comfortable top padding (`pt-16 sm:pt-24`) so editorial typography breathes beneath the deckled paper boundary. |
+### Planned Implementation Steps
+1. **Create `src/components/DeepSeaFogCanvas.tsx`**:
+   - Generates dual-strata procedural volumetric fog puffs using Perlin-style organic harmonic noise.
+   - Hooks into `window.scrollY` and scroll velocity with differential speed coefficients (`0.05` and `0.18`).
+   - Applies feather-edged radial gradients with soft cyan/turquoise glow in `screen` blending mode.
+2. **Mount in `src/components/AmbientDarkAtmosphere.tsx`**:
+   - Integrate `DeepSeaFogCanvas` into the background stack.
+3. **Enhance Ingrassia Scroll Dynamics in `src/components/ProjectsSection.tsx` & `src/hooks/useScrollVelocitySkew.ts`**:
+   - Create a lightweight hook `useScrollVelocitySkew` that calculates smooth velocity-driven skew transforms on project cards without layout thrashing.
+4. **Update `BioluminescenceScrollCanvas.tsx`**:
+   - Enhance particle streamlining and morphing when scroll velocity accelerates.
+5. **Compilation & Quality Verification**:
+   - Validate with `lint_applet` and `compile_applet`.

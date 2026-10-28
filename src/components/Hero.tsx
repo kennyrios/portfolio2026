@@ -85,12 +85,12 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWorks, onContactClick }) =>
           <ScrollReveal variant="fade-up" delay={120} duration={600}>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs font-mono text-zinc-300">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Senior Web Designer & Frontend Architect</span>
+              <span>Full-Stack Developer & Solutions Architect</span>
             </div>
           </ScrollReveal>
 
           <LetterRevealHeadline
-            text="Crafting conversion-driven web systems & tactile digital experiences."
+            text="Crafting scalable web applications & high-performance digital systems."
             className="text-3xl sm:text-5xl lg:text-6xl xl:text-[4.75rem] leading-[1.08]"
             staggerMs={30}
             durationMs={950}
@@ -99,7 +99,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWorks, onContactClick }) =>
 
           <ScrollReveal variant="fade-up" delay={280} duration={700}>
             <p className="text-base sm:text-xl text-zinc-400 font-light leading-relaxed max-w-3xl text-balance">
-              Over 8 years architecting scalable web ecosystems, dynamic CMS frameworks, interactive map engines, and design systems for premier North American enterprises—including Avenue Living Asset Management and Mini Mall Storage Properties.
+              Full-Stack Web Developer with 14+ years of experience engineering robust web applications, scalable CMS platforms, custom APIs, and high-conversion digital systems. Combining solid engineering fundamentals (React, Node.js, Python, PHP, JavaScript ES6+) with AI-assisted tools (Copilot, Claude Code, OpenAI Codex, Google AI Studio) to build resilient, performance-tuned platforms for enterprise leaders including Avenue Living Asset Management and Mini Mall Storage Properties.
             </p>
           </ScrollReveal>
 
@@ -131,45 +131,69 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWorks, onContactClick }) =>
         </div>
       </div>
 
-      {/* Impact Metric Ribbons with Subtle Scroll Float */}
+      {/* 14+ Years Design & Dev Trajectory Showcase */}
       <div ref={statsParallaxRef} className="pt-10 border-t border-white/[0.08] will-change-transform">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-          <ScrollReveal variant="fade-up" delay={100} duration={600}>
-            <div className="border-l border-white/15 pl-4">
-              <p className="text-3xl sm:text-4xl font-display font-semibold text-white tabular-nums">
-                25+
-              </p>
-              <p className="text-xs text-zinc-400 font-mono mt-1">Shipped Web Platforms</p>
-            </div>
-          </ScrollReveal>
+        <ScrollReveal variant="fade-up" delay={150} duration={600}>
+          <div className="p-6 sm:p-8 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-md shadow-2xl space-y-6">
+            {/* Header: Core Experience Headline */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/[0.06]">
+              <div className="flex items-start sm:items-center gap-5 sm:gap-6">
+                <div className="border-l-2 border-amber-400 pl-4 shrink-0">
+                  <span className="text-4xl sm:text-5xl font-display font-semibold text-white tabular-nums tracking-tight">
+                    14+
+                  </span>
+                  <span className="block text-xs uppercase tracking-wider text-amber-400 font-mono font-medium mt-0.5">
+                    Years Design & Dev Trajectory
+                  </span>
+                </div>
+                <div className="hidden sm:block h-12 w-px bg-white/10 shrink-0" />
+                <p className="text-sm text-zinc-300 max-w-xl font-light leading-relaxed">
+                  A continuous dual-discipline engineering practice bridging scalable web architectures, custom APIs, dynamic geospatial locators, and refined human-centered UI/UX systems.
+                </p>
+              </div>
 
-          <ScrollReveal variant="fade-up" delay={200} duration={600}>
-            <div className="border-l border-white/15 pl-4">
-              <p className="text-3xl sm:text-4xl font-display font-semibold text-white tabular-nums">
-                8+
-              </p>
-              <p className="text-xs text-zinc-400 font-mono mt-1">Years Design & Dev Exp</p>
+              <div className="inline-flex items-center gap-2 self-start lg:self-center px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-zinc-300">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>2012 — Present · Enterprise & Digital Scale</span>
+              </div>
             </div>
-          </ScrollReveal>
 
-          <ScrollReveal variant="fade-up" delay={300} duration={600}>
-            <div className="border-l border-white/15 pl-4">
-              <p className="text-3xl sm:text-4xl font-display font-semibold text-white tabular-nums">
-                15,000+
-              </p>
-              <p className="text-xs text-zinc-400 font-mono mt-1">Real Estate Assets Mapped</p>
-            </div>
-          </ScrollReveal>
+            {/* Meaningful Pillars Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+              <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <p className="text-[11px] font-mono text-amber-400 uppercase tracking-wider">01 · Full-Stack Systems</p>
+                <p className="text-sm font-medium text-white">Architecture & Backends</p>
+                <p className="text-xs text-zinc-400 leading-relaxed font-light">
+                  React, TypeScript, Node.js, Python, PHP, custom REST APIs, relational schemas, and enterprise headless CMS.
+                </p>
+              </div>
 
-          <ScrollReveal variant="fade-up" delay={400} duration={600}>
-            <div className="border-l border-white/15 pl-4">
-              <p className="text-3xl sm:text-4xl font-display font-semibold text-white tabular-nums">
-                +55%
-              </p>
-              <p className="text-xs text-zinc-400 font-mono mt-1">Average Page Speed Gains</p>
+              <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <p className="text-[11px] font-mono text-amber-400 uppercase tracking-wider">02 · UI/UX & Design Systems</p>
+                <p className="text-sm font-medium text-white">Design Systems & Craft</p>
+                <p className="text-xs text-zinc-400 leading-relaxed font-light">
+                  Figma-to-code fidelity, WCAG accessibility, fluid motion, component libraries, and conversion-optimized funnels.
+                </p>
+              </div>
+
+              <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <p className="text-[11px] font-mono text-amber-400 uppercase tracking-wider">03 · Geospatial & Data</p>
+                <p className="text-sm font-medium text-white">Dynamic Asset Platforms</p>
+                <p className="text-xs text-zinc-400 leading-relaxed font-light">
+                  Custom Mapbox multi-location locators, dynamic pricing engines, reservation funnels, and CRM pipelines.
+                </p>
+              </div>
+
+              <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <p className="text-[11px] font-mono text-amber-400 uppercase tracking-wider">04 · AI & High Velocity</p>
+                <p className="text-sm font-medium text-white">Modern Tooling & Speed</p>
+                <p className="text-xs text-zinc-400 leading-relaxed font-light">
+                  AI-assisted workflows (Claude Code, Copilot, Codex, Gemini), Core Web Vitals optimization, and CI/CD pipelines.
+                </p>
+              </div>
             </div>
-          </ScrollReveal>
-        </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   </div>

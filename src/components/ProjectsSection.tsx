@@ -265,22 +265,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onSelectProjec
           })}
         </div>
       )}
-
-      {/* Bottom CTA / Inquiry Cues */}
-      <div className="mt-20 text-center">
-        <ScrollReveal variant="fade-up" duration={600}>
-          <div className="inline-flex flex-wrap items-center justify-center gap-3 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] text-xs font-mono text-zinc-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Need full technical documentation or live staging demos?</span>
-            <a
-              href="mailto:kennyrgrafico@gmail.com"
-              className="text-white hover:text-amber-300 font-medium underline underline-offset-4 transition-colors"
-            >
-              Contact Kenny Rios directly →
-            </a>
-          </div>
-        </ScrollReveal>
-      </div>
     </section>
   );
 };

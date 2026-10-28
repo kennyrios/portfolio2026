@@ -201,85 +201,291 @@ export const REAL_PROJECTS: RealProject[] = [
 export const SKILLS_SERVICES = [
   {
     number: '01',
-    title: 'Web Engineering & Development',
-    description: 'Building ultra-responsive, accessible, and high-performance web applications. Expertise spanning React, Vue, WordPress custom post architectures, modern JavaScript/TypeScript, Mapbox integrations, and headless systems.',
-    tags: ['React', 'Vue.js', 'WordPress / PHP', 'TypeScript', 'Tailwind CSS', 'Mapbox API', 'Headless CMS'],
+    title: 'Full-Stack Web Engineering',
+    description: 'Engineering resilient, scalable web applications from database schema to responsive frontend. Deep expertise spanning React, Node.js, Python, PHP, modern JavaScript/TypeScript, RESTful APIs, and relational databases.',
+    tags: ['React', 'Node.js', 'Python', 'PHP', 'TypeScript', 'Tailwind CSS', 'REST APIs', 'PostgreSQL / MySQL'],
   },
   {
     number: '02',
-    title: 'UI/UX & Product Design',
-    description: 'Transforming complex business logic into intuitive, conversion-focused digital interfaces. User research, information architecture, wireframing, high-fidelity Figma design systems, and clickable prototypes.',
-    tags: ['Figma', 'Design Systems', 'Information Architecture', 'User Flows', 'Prototyping', 'Accessibility (WCAG)'],
+    title: 'Dynamic CMS & Enterprise Platforms',
+    description: 'Architecting high-performance enterprise platforms, custom post architectures, and modular component systems. Proven across large-scale WordPress, Crocoblock/JetEngine, Mapbox geospatial integration, and headless e-commerce.',
+    tags: ['WordPress', 'Crocoblock / JetEngine', 'Elementor Pro', 'Custom Post Types', 'Mapbox API', 'Shopify'],
   },
   {
     number: '03',
-    title: 'Brand Identity & Packaging Craft',
-    description: 'Rooted in classic graphic design discipline (@kennyrgrafico). Creating timeless brand marks, typography guidelines, and luxury packaging designs that elevate physical and digital products.',
-    tags: ['Brand Identity', 'Packaging Design', 'Logo Systems', 'Typography', 'Print Production', 'Adobe Suite'],
+    title: 'AI-Assisted Workflows & Product Design',
+    description: 'Leveraging agentic AI tools (Claude Code, OpenAI Codex, Copilot, Google AI Studio) to accelerate development velocity while maintaining meticulous UI/UX craft, Figma design systems, and WCAG accessibility standards.',
+    tags: ['Claude Code', 'OpenAI Codex', 'Copilot', 'Google AI Studio', 'Figma', 'Design Systems', 'WCAG'],
   },
 ];
 
+export const CV_PDF_URL = '/assets/aistudio/Kenny_Rios_Avila_AI_Full_Stack_Developer_CV_b85c2e16.pdf';
+
+export const KENNY_PROFILE = {
+  fullName: 'Kenny Alejandro Rios Avila',
+  preferredName: 'Kenny Rios',
+  title: 'AI-Enabled Full-Stack Developer | Web Applications & Digital Solutions',
+  location: 'Calgary, Alberta, Canada',
+  phone: '+1 587 836 9256',
+  email: 'kennyrgrafico@gmail.com',
+  portfolioUrl: 'https://kennyrios.github.io/portfolio2026/',
+  archiveUrl: 'https://kennyrios.github.io/projects/',
+  githubUrl: 'https://github.com/kennyrios',
+  summary:
+    'Full-stack web developer and digital product specialist with 14+ years of experience across web development, UX/UI, CMS platforms, e-commerce, and digital production. Combines hands-on front-end development with practical back-end customization, API/marketing-platform integrations, analytics, and performance optimization. Currently uses generative AI and AI-assisted coding tools including Copilot, Claude Code, Codex, and Google AI Studio to accelerate development and problem-solving. Brings a product-minded approach: translating business needs into usable interfaces, reusable web systems, and measurable digital outcomes. Experienced collaborating across creative, marketing, and technical teams and explaining web technologies to learners and stakeholders.',
+};
+
 export const TECHNICAL_CAPABILITIES_MATRIX = [
   {
-    domain: 'AI-Assisted Engineering & Workflow',
-    focus: 'Using agentic coding tools and code models to rapidly scaffold components, automate boilerplate, and build internal utilities.',
+    domain: 'Full-Stack & Web Development',
+    focus: 'Engineering responsive, accessible user interfaces and robust web applications with clean component architecture and DOM manipulation.',
+    toolkit: [
+      { text: 'React', isPrimary: true },
+      { text: 'Node.js', isPrimary: true },
+      { text: 'Python', isPrimary: true },
+      { text: 'PHP', isPrimary: true },
+      { text: 'JavaScript (ES6+)', isPrimary: true },
+      { text: 'TypeScript', isPrimary: false },
+      { text: 'HTML5', isPrimary: false },
+      { text: 'CSS3/SCSS', isPrimary: false },
+      { text: 'Tailwind CSS', isPrimary: true },
+      { text: 'REST/JSON', isPrimary: false },
+    ],
+  },
+  {
+    domain: 'AI-Assisted Development & Integration',
+    focus: 'Accelerating development cycles, debugging, and solution prototyping using cutting-edge generative AI models and agentic workflows.',
     toolkit: [
       { text: 'Claude Code', isPrimary: true },
       { text: 'OpenAI Codex', isPrimary: true },
-      { text: 'GitHub Copilot', isPrimary: false },
-      { text: 'Prompt Engineering', isPrimary: false },
-      { text: 'LLM API integrations', isPrimary: false },
+      { text: 'Google AI Studio', isPrimary: true },
+      { text: 'GitHub Copilot', isPrimary: true },
+      { text: 'ChatGPT', isPrimary: false },
+      { text: 'Agentic Workflows', isPrimary: false },
+      { text: 'Business Data & API Integration', isPrimary: true },
     ],
   },
   {
-    domain: 'UI/UX & Visual Design',
-    focus: 'High-fidelity mockups, responsive grid systems, typography, color theory, and multi-brand visual design.',
+    domain: 'APIs & Data Architecture',
+    focus: 'Handling third-party API integrations, JSON transformations, database queries, and structured data record management.',
+    toolkit: [
+      { text: 'REST APIs', isPrimary: true },
+      { text: 'JSON Data Transformation', isPrimary: true },
+      { text: 'MySQL', isPrimary: true },
+      { text: 'PostgreSQL', isPrimary: true },
+      { text: 'MongoDB', isPrimary: false },
+      { text: 'SQL Query Optimization', isPrimary: false },
+    ],
+  },
+  {
+    domain: 'Web Platforms & Dynamic Content',
+    focus: 'Designing modular CMS systems, custom post types, dynamic templates, and enterprise content systems for fast deployment.',
+    toolkit: [
+      { text: 'WordPress', isPrimary: true },
+      { text: 'Elementor Pro', isPrimary: true },
+      { text: 'Crocoblock / JetEngine', isPrimary: true },
+      { text: 'Drupal', isPrimary: false },
+      { text: 'HubSpot CMS', isPrimary: false },
+      { text: 'SharePoint', isPrimary: false },
+      { text: 'Shopify', isPrimary: true },
+    ],
+  },
+  {
+    domain: 'Integrations & Digital Operations',
+    focus: 'Implementing marketing automation, behavioral event tracking, interactive location mapping, and conversion pipelines.',
+    toolkit: [
+      { text: 'Google Tag Manager (GTM)', isPrimary: true },
+      { text: 'Google Analytics 4 (GA4)', isPrimary: true },
+      { text: 'HubSpot CRM', isPrimary: true },
+      { text: 'Mapbox API', isPrimary: true },
+      { text: 'Mailchimp', isPrimary: false },
+      { text: 'CRM Automation', isPrimary: false },
+    ],
+  },
+  {
+    domain: 'Product Experience & Delivery',
+    focus: 'End-to-end UX/UI design, interactive Figma prototypes, design systems, web performance, accessibility, and SEO.',
     toolkit: [
       { text: 'Figma', isPrimary: true },
       { text: 'Adobe XD', isPrimary: false },
-      { text: 'Photoshop', isPrimary: false },
-      { text: 'Illustrator', isPrimary: false },
-      { text: 'InDesign', isPrimary: false },
-    ],
-  },
-  {
-    domain: 'Interactive Frontend',
-    focus: 'Bringing Figma layouts to life with precision CSS, fluid micro-interactions, responsive mobile-first layouts, and clean UI components.',
-    toolkit: [
-      { text: 'Tailwind CSS', isPrimary: true },
-      { text: 'HTML5', isPrimary: false },
-      { text: 'CSS3/Sass', isPrimary: false },
-      { text: 'React', isPrimary: true },
-      { text: 'JavaScript (ES6+)', isPrimary: false },
-      { text: 'Framer Motion', isPrimary: false },
-    ],
-  },
-  {
-    domain: 'CMS & Dynamic Web Systems',
-    focus: 'Building modular page templates so marketing teams can launch landing pages quickly while strictly preserving the visual brand identity.',
-    toolkit: [
-      { text: 'WordPress (Custom Templates/CPT)', isPrimary: true },
-      { text: 'Elementor Pro', isPrimary: true },
-      { text: 'Dynamic Content Layouts', isPrimary: false },
-    ],
-  },
-  {
-    domain: 'MarTech & Analytics',
-    focus: 'Designing high-converting lead capture funnels and ensuring every user interaction is accurately measured across marketing tools.',
-    toolkit: [
-      { text: 'HubSpot CRM', isPrimary: true },
-      { text: 'Google Tag Manager (GTM)', isPrimary: true },
-      { text: 'GA4 Event Tracking', isPrimary: true },
-      { text: 'Conversion Optimization (CRO)', isPrimary: false },
-    ],
-  },
-  {
-    domain: 'Scripting & Automation',
-    focus: 'Writing lightweight scripts to automate repetitive tasks, parse design assets, or format SEO data.',
-    toolkit: [
-      { text: 'Python (Task Scripting & Automation)', isPrimary: true },
-      { text: 'Microsoft Power Apps', isPrimary: false },
-      { text: 'REST Webhooks', isPrimary: false },
+      { text: 'Adobe Creative Suite', isPrimary: false },
+      { text: 'Design Systems', isPrimary: true },
+      { text: 'WCAG Accessibility', isPrimary: true },
+      { text: 'Web Performance Optimization', isPrimary: true },
+      { text: 'SEO & Cross-Browser Testing', isPrimary: false },
     ],
   },
 ];
+
+export interface CareerExperience {
+  role: string;
+  company: string;
+  location: string;
+  period: string;
+  isCurrent?: boolean;
+  highlights: string[];
+  tags: string[];
+}
+
+export const CAREER_EXPERIENCE: CareerExperience[] = [
+  {
+    role: 'Web Designer & Web Developer',
+    company: 'Avenue Living Asset Management',
+    location: 'Calgary, AB, Canada',
+    period: 'Oct 2022 – Present',
+    isCurrent: true,
+    highlights: [
+      'Lead technical implementation and ongoing management of multiple corporate websites, partnering with creative and marketing stakeholders to deliver digital experiences aligned with business objectives.',
+      'Build responsive interfaces, campaign landing pages, reusable templates, and scalable content systems using HTML, CSS, JavaScript/jQuery, WordPress, Elementor, Drupal, HubSpot CMS, and SharePoint.',
+      'Integrate websites and digital workflows with third-party services, handling API requests and JSON data to support connected digital experiences and business processes.',
+      'Use AI-assisted development tools (Claude Code, Copilot, ChatGPT, Codex) to accelerate coding, debugging, and explore opportunities to connect AI tools with business data.',
+      'Develop custom WordPress functionality with PHP and Crocoblock/JetEngine, including custom post types and dynamic content features.',
+      'Implement and maintain marketing technology and analytics workflows using HubSpot, Mailchimp, Google Tag Manager, and Google Analytics 4 to support campaign measurement and lead generation.',
+      'Optimize usability, SEO, performance, and cross-browser behavior; troubleshoot publishing, indexing, layout, and front-end issues across production websites.',
+    ],
+    tags: ['WordPress', 'PHP', 'JavaScript', 'Mapbox', 'HubSpot', 'GTM / GA4', 'Crocoblock', 'AI Tooling'],
+  },
+  {
+    role: 'Graphic Designer and Webmaster',
+    company: "Paul's Bakery (PAUL Vancouver)",
+    location: 'Vancouver, BC, Canada',
+    period: 'Jul 2022 – Sep 2024',
+    highlights: [
+      'Designed digital and print campaign assets, social content, packaging concepts, and promotional materials for the historic French bakery chain (Est. 1889).',
+      'Maintained website content and promotional graphics, supporting Parisian brand consistency and customer engagement.',
+      'Engineered responsive layouts, menu showcases, and catering inquiry workflows.',
+    ],
+    tags: ['Web Design', 'WordPress', 'Brand Identity', 'Packaging Concepts', 'Print & Digital'],
+  },
+  {
+    role: 'Graphic Designer / E-commerce Web Developer',
+    company: 'MoltonRox Solutions Inc.',
+    location: 'Surrey, BC, Canada',
+    period: 'Oct 2021 – Jun 2022',
+    highlights: [
+      'Designed and developed e-commerce experiences using React and Shopify, with attention to performance, loading speed, and SEO.',
+      'Created brand identity, packaging, and digital assets for products distributed through major retailers including Walmart, London Drugs, and Amazon.',
+      'Conducted discovery, Figma prototyping, and responsive storefront implementation.',
+    ],
+    tags: ['React', 'Shopify', 'E-commerce', 'Brand Identity', 'Packaging Design', 'SEO'],
+  },
+  {
+    role: 'Web Development Instructor / Sensei',
+    company: 'Devf',
+    location: 'Mexico & Remote',
+    period: 'Apr 2021 – Oct 2021',
+    highlights: [
+      'Taught HTML5, CSS3, JavaScript, and React through hands-on lessons, coding exercises, and practical real-world projects.',
+      'Mentored learners in debugging, responsive design, algorithmic problem-solving, and professional front-end development practices.',
+    ],
+    tags: ['React', 'JavaScript', 'Instruction', 'Mentorship', 'Code Reviews', 'Git'],
+  },
+  {
+    role: 'WorldSkills Web Technologies Expert & International Jury Member',
+    company: 'Workskills / WorldSkills International',
+    location: 'Bogotá, Colombia & Kazan, Russia',
+    period: 'May 2018 – Dec 2020',
+    highlights: [
+      'Trained and mentored competitors representing Colombia for national and international web technology competitions.',
+      'Developed elite training programs covering HTML, CSS, JavaScript, responsive design, and modern web development practices.',
+      'Served as Colombian Web Technologies Expert and official jury member at the 45th WorldSkills International Competition in Kazan, Russia (2019).',
+    ],
+    tags: ['WorldSkills Kazan 2019', 'Web Standards', 'Jury Member', 'PHP', 'JavaScript', 'CMS Standards'],
+  },
+  {
+    role: 'Graphic Design & Multimedia Instructor',
+    company: 'SENA (Servicio Nacional de Aprendizaje)',
+    location: 'Bogotá, Colombia',
+    period: 'Nov 2014 – Dec 2020',
+    highlights: [
+      'Delivered instruction in graphic design, front-end development, web usability, interface design, and digital technologies to hundreds of students.',
+      'Integrated SEO, Google Analytics, accessibility, and practical digital production concepts into the official technical curriculum.',
+      'Coached national skill competition competitors to top podium placements.',
+    ],
+    tags: ['Curriculum Design', 'Frontend Development', 'Web Usability', 'Analytics', 'Multimedia'],
+  },
+  {
+    role: 'Web Designer & Web Developer',
+    company: 'Webhouse',
+    location: 'Bogotá, Colombia',
+    period: 'Jul 2013 – Nov 2014',
+    highlights: [
+      'Led web design delivery for client websites, developing responsive front ends with HTML5, CSS, and JavaScript.',
+      'Implemented and customized WordPress and Joomla websites, contributing to improvements associated with approximately 25% growth in client online revenue.',
+    ],
+    tags: ['WordPress', 'Joomla', 'HTML5/CSS', 'Client Solutions', 'Responsive Design'],
+  },
+  {
+    role: 'Earlier Experience & Agency Craft',
+    company: 'BBB Equipos; Imágenes y Textos',
+    location: 'Bogotá, Colombia',
+    period: '2007 – 2013',
+    highlights: [
+      'Produced brand, promotional, print, event, and web graphics, building a rock-solid foundation in visual communication, typography, and digital production.',
+    ],
+    tags: ['Visual Communication', 'Print Production', 'Typography', 'Brand Identity'],
+  },
+];
+
+export interface EducationItem {
+  degree: string;
+  institution: string;
+  location: string;
+  period: string;
+  note?: string;
+}
+
+export const EDUCATION_DATA: EducationItem[] = [
+  {
+    degree: 'Computer and Information Systems, Post-Degree Diploma (Data Analytics)',
+    institution: 'Douglas College',
+    location: 'New Westminster, BC, Canada',
+    period: '2021 – 2022',
+    note: 'Focused on data analytics, software development, relational databases, and enterprise systems.',
+  },
+  {
+    degree: 'Graphic Design, Bachelor’s Degree',
+    institution: 'Fundación Universidad Jorge Tadeo Lozano',
+    location: 'Bogotá, Colombia',
+    period: '2008 – 2012',
+    note: 'Rigorous foundation in typography, composition, digital media, user research, and visual systems.',
+  },
+  {
+    degree: 'Development and Design, Skilled Trade Certificate',
+    institution: 'Universidad Piloto de Colombia',
+    location: 'Bogotá, Colombia',
+    period: '2013',
+    note: 'Specialized certificate in multimedia production and interactive web design.',
+  },
+];
+
+export interface CertificationItem {
+  title: string;
+  issuer: string;
+  year: string;
+  description: string;
+  isAi?: boolean;
+}
+
+export const CERTIFICATIONS_DATA: CertificationItem[] = [
+  {
+    title: 'Google AI Professional Certificate',
+    issuer: 'Google',
+    year: '2026',
+    description: 'Practical generative AI applications, responsible AI principles, AI-assisted workflows, and solution prototyping.',
+    isAi: true,
+  },
+  {
+    title: 'Certified Web Technologies Expert & Competition Jury Member',
+    issuer: 'WorldSkills International',
+    year: '2019',
+    description: '45th WorldSkills International Competition in Kazan, Russia — Certified expert evaluating international web engineering standards.',
+    isAi: false,
+  },
+];
+
+export const LANGUAGES_DATA = [
+  { language: 'Spanish', proficiency: 'Native' },
+  { language: 'English', proficiency: 'Fluent' },
+];
+

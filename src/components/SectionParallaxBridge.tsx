@@ -6,8 +6,7 @@ export interface SectionParallaxBridgeProps {
   fromLabel: string;    // e.g. "HERO OVERVIEW"
   toLabel: string;      // e.g. "FEATURED WORKS"
   marqueePrimary: string[]; // e.g. ["SELECTED WORKS", "HIGH-VELOCITY CMS", "MAPBOX GL", "DESIGN SYSTEMS"]
-  marqueeSecondary?: string[]; // e.g. ["CALGARY, CANADA", "ENTERPRISE ARCHITECTURE", "REACT 19", "TYPESCRIPT"]
-  coordinates?: string; // e.g. "51.0447° N · 114.0719° W"
+  marqueeSecondary?: string[];
   accent?: 'amber' | 'cyan' | 'emerald';
   id?: string;
 }
@@ -17,13 +16,7 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
   fromLabel,
   toLabel,
   marqueePrimary,
-  marqueeSecondary = [
-    'PERFORMANCE FIRST',
-    'WCAG AA ACCESSIBLE',
-    'MODULAR ARCHITECTURE',
-    '60FPS COMPOSITING',
-  ],
-  coordinates = '51.0447° N · 114.0719° W',
+  marqueeSecondary,
   accent = 'amber',
   id,
 }) => {
@@ -112,7 +105,7 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
     <div
       ref={containerRef}
       id={id}
-      className="relative w-full py-28 sm:py-36 lg:py-44 overflow-hidden select-none pointer-events-none z-10"
+      className="relative w-full py-8 sm:py-10 lg:py-12 overflow-hidden select-none pointer-events-none z-10"
       aria-hidden="true"
     >
       {/* Floating Ambient Parallax Glow Portal */}
@@ -125,16 +118,11 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
       />
 
       {/* Top Precision Architectural Hairline & Crosshair Grid */}
-      <div className="relative max-w-7xl mx-auto px-6 mb-6">
-        <div className="relative flex items-center justify-between text-[11px] font-mono text-zinc-500 uppercase tracking-widest pb-3">
+      <div className="relative max-w-7xl mx-auto px-6 mb-3">
+        <div className="relative flex items-center justify-between text-[11px] font-mono text-zinc-500 uppercase tracking-widest pb-2">
           <div className="flex items-center gap-2">
             <span className={`${accentColorMap.text} font-semibold`}>+</span>
             <span>{fromLabel}</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline text-zinc-600">COORDINATES</span>
-            <span className="text-zinc-400">{coordinates}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -166,7 +154,7 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
           ref={leftMarqueeRef}
           className="flex whitespace-nowrap will-change-transform font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight uppercase"
         >
-          {Array.from({ length: 4 }).map((_, rep) => (
+          {Array.from({ length: Math.max(6, Math.ceil(12 / Math.max(1, marqueePrimary.length))) }).map((_, rep) => (
             <div key={rep} className="flex items-center gap-8 shrink-0 pr-8">
               {marqueePrimary.map((item, idx) => (
                 <React.Fragment key={`${rep}-${idx}`}>
@@ -184,7 +172,7 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
       </div>
 
       {/* Floating Center Parallax Section Stamp */}
-      <div className="relative max-w-7xl mx-auto px-6 my-3">
+      <div className="relative max-w-7xl mx-auto px-6 my-2">
         <div
           ref={centerFloatingBadgeRef}
           className="flex items-center justify-center will-change-transform"
@@ -203,29 +191,31 @@ export const SectionParallaxBridge: React.FC<SectionParallaxBridgeProps> = ({
       </div>
 
       {/* Secondary Kinetic Parallax Typography Runway (Slides Right - Reverse Shear) */}
-      <div className="relative w-full overflow-hidden my-2">
-        <div
-          ref={rightMarqueeRef}
-          className="flex whitespace-nowrap will-change-transform font-mono text-xs sm:text-sm uppercase tracking-[0.25em] text-zinc-500/70"
-          style={{ transform: 'translate3d(-100px, 0, 0)' }}
-        >
-          {Array.from({ length: 5 }).map((_, rep) => (
-            <div key={rep} className="flex items-center gap-6 shrink-0 pr-6">
-              {marqueeSecondary.map((item, idx) => (
-                <React.Fragment key={`${rep}-${idx}`}>
-                  <span className="hover:text-zinc-300 transition-colors">
-                    {item}
-                  </span>
-                  <span className="text-zinc-700 text-xs font-serif">·</span>
-                </React.Fragment>
-              ))}
-            </div>
-          ))}
+      {marqueeSecondary && marqueeSecondary.length > 0 && (
+        <div className="relative w-full overflow-hidden my-1">
+          <div
+            ref={rightMarqueeRef}
+            className="flex whitespace-nowrap will-change-transform font-mono text-xs sm:text-sm uppercase tracking-[0.25em] text-zinc-500/70"
+            style={{ transform: 'translate3d(-100px, 0, 0)' }}
+          >
+            {Array.from({ length: Math.max(5, Math.ceil(12 / Math.max(1, marqueeSecondary.length))) }).map((_, rep) => (
+              <div key={rep} className="flex items-center gap-6 shrink-0 pr-6">
+                {marqueeSecondary.map((item, idx) => (
+                  <React.Fragment key={`${rep}-${idx}`}>
+                    <span className="hover:text-zinc-300 transition-colors">
+                      {item}
+                    </span>
+                    <span className="text-zinc-700 text-xs font-serif">·</span>
+                  </React.Fragment>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Bottom Precision Hairline Ruler */}
-      <div className="relative max-w-7xl mx-auto px-6 mt-6">
+      <div className="relative max-w-7xl mx-auto px-6 mt-3">
         <div className="relative w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </div>
     </div>

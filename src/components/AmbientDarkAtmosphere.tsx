@@ -1,6 +1,7 @@
 import React, { useRef, useMemo } from 'react';
 import { useParallaxBackground } from '../hooks/useParallaxBackground';
 import { MouseWaveCanvas } from './MouseWaveCanvas';
+import { BioluminescenceScrollCanvas } from './BioluminescenceScrollCanvas';
 
 export const AmbientDarkAtmosphere: React.FC = () => {
   const farLayerRef = useRef<HTMLDivElement>(null);
@@ -104,6 +105,9 @@ export const AmbientDarkAtmosphere: React.FC = () => {
 
       {/* INTERACTIVE MOUSE POINTER WAVE & RIPPLE CANVAS */}
       <MouseWaveCanvas />
+
+      {/* CONTINUOUS BIOLUMINESCENCE SCROLL ANIMATION CANVAS */}
+      <BioluminescenceScrollCanvas />
 
       {/* Lightweight Vignette Rim for Framing Depth */}
       <div

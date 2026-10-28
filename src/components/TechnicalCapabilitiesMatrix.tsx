@@ -19,7 +19,7 @@ export const TechnicalCapabilitiesMatrix: React.FC = () => {
             </h3>
           </div>
           <p className="text-xs font-mono text-zinc-400">
-            Frontend Architecture · Dynamic CMS · Mapbox & Real Estate
+            Full-Stack Engineering · AI-Assisted Workflows · APIs & CMS Architecture
           </p>
         </div>
       </ScrollReveal>

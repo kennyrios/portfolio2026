@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
               <span className="tabular-nums text-zinc-300 font-medium">Local Time: {calgaryTime || 'MST'}</span>
             </div>
             <p className="text-xs text-zinc-500 font-light">
-              © {new Date().getFullYear()} Kenny Rios. Web Architecture, Design Systems & High-Impact Digital Products.
+              © {new Date().getFullYear()} Kenny Alejandro Rios Avila · AI-Enabled Full-Stack Developer & Digital Solutions.
             </p>
           </div>
 
@@ -59,7 +59,7 @@ export const Footer: React.FC = () => {
               kennyrgrafico@gmail.com
             </a>
             <a
-              href="https://github.com"
+              href="https://github.com/kennyrios"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
@@ -68,13 +68,13 @@ export const Footer: React.FC = () => {
               <span>GitHub</span>
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://kennyrios.github.io/portfolio2026/"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
             >
-              <Linkedin className="w-3.5 h-3.5" />
-              <span>LinkedIn</span>
+              <Globe className="w-3.5 h-3.5" />
+              <span>Portfolio 2026</span>
             </a>
             <a
               href="https://kennyrios.github.io/projects/"

@@ -4,6 +4,7 @@ import { TechnicalCapabilitiesMatrix } from './TechnicalCapabilitiesMatrix';
 import { ScrollReveal } from './ScrollReveal';
 import { SectionParallaxWatermark } from './SectionParallaxWatermark';
 import { useSectionParallax } from '../hooks/useSectionParallax';
+import { MapPin, Terminal, Layers, Cpu } from 'lucide-react';
 
 export const AboutSection: React.FC = () => {
   const bioColumnParallaxRef = useSectionParallax<HTMLDivElement>({
@@ -22,12 +23,13 @@ export const AboutSection: React.FC = () => {
         accent="cyan"
       />
 
-      {/* 1. Bio & Background */}
+      {/* 1. Bio & Background — Focused on Full-Stack Developer */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pb-16 border-b border-white/[0.08]">
         <div ref={bioColumnParallaxRef} className="lg:col-span-5 space-y-4 will-change-transform">
           <ScrollReveal variant="fade-up" duration={650}>
-            <p className="text-xs font-mono uppercase tracking-widest text-amber-400 font-medium">
-              About Kenny Rios
+            <p className="text-xs font-mono uppercase tracking-widest text-amber-400 font-medium flex items-center gap-2">
+              <Terminal className="w-3.5 h-3.5" />
+              <span>Full-Stack Engineering & Craft</span>
             </p>
           </ScrollReveal>
           <ScrollReveal variant="fade-up" delay={100} duration={700}>
@@ -37,8 +39,12 @@ export const AboutSection: React.FC = () => {
           </ScrollReveal>
           <ScrollReveal variant="fade-up" delay={200} duration={650}>
             <div className="pt-2 text-xs font-mono text-zinc-400 space-y-1.5">
-              <p>Based in Calgary, Canada · Remote & Hybrid</p>
+              <p className="flex items-center gap-2">
+                <MapPin className="w-3.5 h-3.5 text-zinc-500" />
+                <span>Calgary, Alberta, Canada · Remote & Hybrid</span>
+              </p>
               <p>Direct: <span className="text-white font-medium">kennyrgrafico@gmail.com</span></p>
+              <p>Phone: <span className="text-white font-medium">+1 587 836 9256</span></p>
             </div>
           </ScrollReveal>
         </div>
@@ -46,17 +52,22 @@ export const AboutSection: React.FC = () => {
         <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-zinc-400 leading-relaxed font-light">
           <ScrollReveal variant="fade-up" delay={120} duration={650}>
             <p>
-              I am a <strong className="text-white font-medium">Senior Web Developer and UI/UX Designer</strong> with over eight years of hands-on experience designing and engineering conversion-focused websites, customer portals, and brand experiences.
+              I am a <strong className="text-white font-medium">Full-Stack Web Developer and Digital Solutions Specialist</strong> with over 14 years of hands-on experience engineering high-performance web applications, scalable CMS architectures, and interactive digital products.
             </p>
           </ScrollReveal>
           <ScrollReveal variant="fade-up" delay={220} duration={650}>
             <p>
-              In my current and recent roles, I have spearheaded major web overhauls for top Canadian and North American enterprises, notably <strong className="text-white">Avenue Living Asset Management</strong> (one of Canada’s largest real estate asset managers) and <strong className="text-white">Mini Mall Storage Properties</strong> (spanning 60+ locations across Canada and the US).
+              My approach connects end-to-end engineering fundamentals—<strong className="text-white font-medium">React, Node.js, Python, PHP, JavaScript ES6+, TypeScript, and SQL databases</strong>—with cutting-edge AI-assisted development tools (<strong className="text-white font-medium">Claude Code, OpenAI Codex, Copilot, Google AI Studio</strong>). This enables me to scaffold architectures rapidly, automate boilerplate, and solve complex business logic with speed and precision.
             </p>
           </ScrollReveal>
           <ScrollReveal variant="fade-up" delay={320} duration={650}>
             <p>
-              My work is characterized by clean visual discipline, scalable CMS architecture, dynamic interactive maps (Mapbox), and robust design systems. I operate comfortably across the full lifecycle—from user research and Figma prototyping to production PHP, WordPress, React, and TypeScript codebases.
+              In recent enterprise roles, I have led technical execution for flagship North American brands, notably <strong className="text-white font-medium">Avenue Living Asset Management</strong> (managing 15+ corporate web properties, interactive Mapbox geospatial mapping, and automated HubSpot/GA4 funnels) and <strong className="text-white font-medium">Mini Mall Storage Properties</strong> (scaling location search and conversion flows across 60+ North American sites).
+            </p>
+          </ScrollReveal>
+          <ScrollReveal variant="fade-up" delay={420} duration={650}>
+            <p>
+              Because my background bridges graphic design rigor with full-stack engineering, I deliver solutions that are not only performant and structurally sound under the hood, but also visually refined, accessible (WCAG), and conversion-driven.
             </p>
           </ScrollReveal>
         </div>
@@ -73,7 +84,7 @@ export const AboutSection: React.FC = () => {
               Disciplines
             </p>
             <h3 className="text-2xl sm:text-3xl font-display font-medium tracking-tight text-white">
-              Services & Practical Execution
+              Full-Stack Capabilities & Execution
             </h3>
           </div>
         </ScrollReveal>

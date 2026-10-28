@@ -16,7 +16,7 @@ import { Footer } from './components/Footer';
 import { RealProjectModal } from './components/RealProjectModal';
 import { LenisProvider, useLenis } from './context/LenisContext';
 import { SectionParallaxBridge } from './components/SectionParallaxBridge';
-import { TornPaperHorizon } from './components/TornPaperHorizon';
+import { SmoothWaveHorizon } from './components/TornPaperHorizon';
 
 function PortfolioApp() {
   const [selectedProject, setSelectedProject] = useState<RealProject | null>(null);
@@ -40,7 +40,9 @@ function PortfolioApp() {
       <AmbientDarkAtmosphere />
 
       {/* Floating Dark Glass Navigation Bar */}
-      <Navigation onContactClick={handleScrollToContact} />
+      <Navigation
+        onContactClick={handleScrollToContact}
+      />
 
       {/* Main Content Sections */}
       <main className="relative z-10">
@@ -51,14 +53,14 @@ function PortfolioApp() {
           </div>
         </div>
 
-        {/* Section 2: Hero Section overlapping Section 1 with Artisanal Torn Paper Edge (Straight edge-to-edge, zero rounded corners) */}
+        {/* Section 2: Hero Section overlapping Section 1 with Smooth Curved Wave Horizon (Straight edge-to-edge, zero rounded corners) */}
         <div
           id="hero-content"
           className="relative z-20 shadow-[0_-30px_90px_rgba(0,0,0,0.95),0_-10px_30px_rgba(0,0,0,0.8)]"
           style={{ marginTop: '-100vh' }}
         >
-          {/* Animated Artisanal Deckled Torn Paper Horizon across full viewport width */}
-          <TornPaperHorizon />
+          {/* Animated 100% Solid Opaque Smooth-Curved Wave Horizon across full viewport width */}
+          <SmoothWaveHorizon />
 
           <Hero
             onExploreWorks={handleScrollToWorks}
@@ -73,21 +75,7 @@ function PortfolioApp() {
             sectionIndex="01 // 03"
             fromLabel="OVERVIEW & IMPACT"
             toLabel="SELECTED WORKS"
-            marqueePrimary={[
-              'SELECTED WORKS',
-              'AVENUE LIVING ASSET MANAGEMENT',
-              'MINI MALL STORAGE',
-              'DYNAMIC MAPPING',
-              'DESIGN SYSTEMS',
-            ]}
-            marqueeSecondary={[
-              'CALGARY, CANADA',
-              '60FPS COMPOSITING',
-              'ENTERPRISE ARCHITECTURE',
-              'TYPESCRIPT',
-              'REACT 19',
-            ]}
-            coordinates="51.0447° N · 114.0719° W"
+            marqueePrimary={['SELECTED WORKS']}
             accent="amber"
           />
 
@@ -112,7 +100,6 @@ function PortfolioApp() {
               'FIGMA TO PRODUCTION',
               'CALGARY HEADQUARTERS',
             ]}
-            coordinates="51.0447° N · 114.0719° W"
             accent="cyan"
           />
 
@@ -135,7 +122,6 @@ function PortfolioApp() {
               'AVAILABLE FOR SELECTED CLIENTS',
               'ESTABLISHED 2016',
             ]}
-            coordinates="51.0447° N · 114.0719° W"
             accent="emerald"
           />
 
